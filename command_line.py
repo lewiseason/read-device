@@ -7,8 +7,7 @@ pass_config = click.make_pass_decorator(Config)
 
 formatters = ['pretty', 'cacti', 'csv']
 
-
-@click.group()
+@click.group(invoke_without_command=True)
 @click.option('-q', '--quiet', is_flag=True,
 	default=False, help="Don't prompt or display errors")
 @click.option('-f', '--format', type=click.Choice(formatters),
@@ -47,14 +46,13 @@ def enumerate(config, **kwargs):
 @main.command()
 @pass_config
 def hammer(config):
-
+	# TODO: Concurrency
+	# TODO: Filtering?
 	devices = config.instantiate_devices({})
 
 	for device in devices:
 		device.enumerate()
 		click.echo(config.formatter.device(device) + "\n")
-
-	pass # Enumerate all matching devices (TODO: filtering)
 
 @main.command()
 @pass_config
