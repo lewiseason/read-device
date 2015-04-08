@@ -7,7 +7,7 @@ pass_config = click.make_pass_decorator(Config)
 
 formatters = ['pretty', 'cacti', 'csv']
 
-@click.group(invoke_without_command=True)
+@click.group()
 @click.option('-q', '--quiet', is_flag=True,
 	default=False, help="Don't prompt or display errors")
 @click.option('-f', '--format', type=click.Choice(formatters),
