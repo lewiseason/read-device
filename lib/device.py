@@ -2,6 +2,7 @@ import imp
 from lxml import etree
 
 from lib.helpers import locate_in_dir
+from lib.errors import *
 
 class DeviceFinder:
 	"""
@@ -159,7 +160,7 @@ class DeviceFactory:
 			return profile
 
 		else:
-			raise Exception("TODO: Missing profile: %s" % profile_name)
+			raise ConfigurationError("Missing profile: %s" % profile_name)
 
 
 	def merge_node_mutator(self, node, mutator):

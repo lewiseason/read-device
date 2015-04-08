@@ -1,7 +1,9 @@
+import sys
 import click
 from lib.config import Config
+from lib.errors import *
 
-pass_config = click.make_pass_decorator(Config, ensure=True)
+pass_config = click.make_pass_decorator(Config)
 
 formatters = ['pretty', 'cacti', 'csv']
 
@@ -11,13 +13,16 @@ formatters = ['pretty', 'cacti', 'csv']
 	default=False, help="Don't prompt or display errors")
 @click.option('-f', '--format', type=click.Choice(formatters),
 	default='pretty', help='Specify an output format. Default: pretty')
-@pass_config
-def main(config, **kwargs):
+@click.pass_context
+def main(ctx, **kwargs):
 	"""
 	Query the state of various types of hardware.
 	"""
 
-	config.load_interactive(kwargs)
+	config  = Config(kwargs)
+	ctx.obj = config
+
+	set_exception_handler(config.quiet)
 
 @main.command()
 @click.option('-n', '--name',

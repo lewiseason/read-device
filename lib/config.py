@@ -19,7 +19,9 @@ class Config(object):
 
 	_formatter = None
 
-	def __init__(self):
+	def __init__(self, kwargs):
+		self.load_interactive(kwargs)
+
 		config_path = h.locate_file('configuration', [
 			'~/.read_device/site.xml',
 			'/etc/read_device/site.xml',

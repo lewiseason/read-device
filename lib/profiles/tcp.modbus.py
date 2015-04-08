@@ -4,6 +4,7 @@ import pymodbus.exceptions as mb_exceptions
 
 from lib.resources import BaseProfile, Property, requires_configuration
 from lib.decoders import decode
+from lib.errors import *
 
 
 class TCPModbus(BaseProfile):
@@ -13,7 +14,7 @@ class TCPModbus(BaseProfile):
 	manufacturer = 'N/A'
 	product = 'Generic TCP/Modbus Gateway'
 	version = 2
-	
+
 	def configure(self):
 		self.slave = int(self.args.get('slave'))
 		self.client = ModbusTcpClient(self.address)
@@ -58,6 +59,6 @@ class TCPModbus(BaseProfile):
 			decoder = decode[self.encoding]
 			property.populate(decoder(response))
 		else:
-			raise Exception("TODO: The device did not respond")
+			raise PermanentFailure("TODO: The device did not respond")
 
 profile = TCPModbus
