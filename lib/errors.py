@@ -10,6 +10,9 @@ class PermanentFailure(DefinedError):
 class ConfigurationError(DefinedError):
 	pass
 
+class DataError(DefinedError):
+	pass
+
 def handle_exception_normally(exctype, value, traceback):
 	if issubclass(exctype, DefinedError):
 		click.echo(value, err=True)
