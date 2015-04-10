@@ -15,7 +15,7 @@ def shift16(words):
 
 def ieee754(words):
 	value = shift16(words)
-	return struct.unpack('>f', struct.pack('>i', value))[0]
+	return struct.unpack('>f', struct.pack('>I', value))[0]
 
 def kJ_to_kWh(raw):
 	return round(float(raw) * 0.00027777777777778, 3)
