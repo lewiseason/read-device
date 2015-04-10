@@ -56,10 +56,9 @@ class DeviceFinder:
 
 	def create_from(self, facets):
 		if facets.get('profile') is None:
-			raise Exception("TODO: Can't create a device on-the-fly without specifying a profile")
+			raise ConfigurationError("No devices were matched and no profile was specified for on-the-fly creation.")
 
 		return etree.Element("Device", facets)
-
 
 class DeviceFactory:
 	"""
@@ -105,11 +104,15 @@ class DeviceFactory:
 			profile = imp.load_source('profile', profile_path).profile
 
 		else:
+			# Otherwise, try xml mutators
 			profile = self.profile_from_mutator(node, profile_name)
 
-		profile.profile_name = profile_name
+		try:
+			profile.profile_name = profile_name
 
-		return profile
+			return profile
+		except AttributeError:
+			raise ConfigurationError('No profile was matched - make sure it exists?')
 
 	def walk(self, node, max_depth=None, depth=0):
 		"""
@@ -158,10 +161,6 @@ class DeviceFactory:
 			profile = self.merge_profile_mutator(profile, mutator_node)
 
 			return profile
-
-		else:
-			raise ConfigurationError("Missing profile: %s" % profile_name)
-
 
 	def merge_node_mutator(self, node, mutator):
 		"""

@@ -1,4 +1,5 @@
 import struct
+from lib.errors import *
 
 def shift(words, by):
 	if len(words) is 1:
@@ -8,7 +9,7 @@ def shift(words, by):
 		hi, lo = tuple(words)
 		return (hi << by) + lo
 
-	raise Exception("TODO: Helpful message?")
+	raise DataError('Tried to shift %i words by %i bits.' % (len(words), by))
 
 def shift16(words):
 	return shift(words, 16)
@@ -23,5 +24,5 @@ def kJ_to_kWh(raw):
 decode = {
 	'ieee754': ieee754,
 	'shift': shift16,
-	'kJ_to_kWh': kJ_to_kWh,	
+	'kJ_to_kWh': kJ_to_kWh,
 }
