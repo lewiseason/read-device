@@ -14,6 +14,7 @@
 	<Room name="Plant Room A">
 		<Device profile="integra.1530" address="172.16.4.135" slave="13" name="A Side Main Incomer" />
 		<Device profile="integra.1530" address="172.16.4.135" slave="14" name="B Side Main Incomer" />
+		<Device profile="integra.1530" address="172.16.4.135" slave="12" name="A Side Generator Incomer" />
 		<Device profile="integra.1530" address="172.16.4.135" slave="17" name="Computer Room 2 CCRU Panel" />
 		<Device profile="integra.1530" address="172.16.4.135" slave="20" name="OP1 Supply" />
 		<Device profile="integra.1530" address="172.16.4.135" slave="22" name="Plant Room Sub-board GP and GL" />
@@ -50,19 +51,21 @@
 		<Device profile="countis.e53" address="172.16.4.92" slave="38" name="C-MP1 Incomer" />
 		<Device profile="countis.e53" address="172.16.4.92" slave="18" name="C-MP2 Incomer" />
 		<Device profile="countis.e53" address="172.16.4.92" slave="22" name="C-LP1 Supply" />
+
+		<Device profile="countis.e53" address="172.16.4.92" slave="44" name="Supply to Chiller No. 3" />
 	</Room>
 
 	<Room name="Computer Room 3">
-	  <Device profile="countis.e53" address="172.16.4.92" slave="50" name="PDU1 Incomer" />
-	  <Device profile="countis.e53" address="172.16.4.92" slave="51" name="PDU2 Incomer" />
-	  <Device profile="countis.e53" address="172.16.4.92" slave="52" name="PDU3 Incomer" />
-	  <Device profile="countis.e53" address="172.16.4.92" slave="53" name="PDU4 Incomer" />
-	  <Device profile="countis.e53" address="172.16.4.92" slave="54" name="PDU5 Incomer" />
-	  <Device profile="countis.e53" address="172.16.4.92" slave="55" name="PDU6 Incomer" />
-	  <Device profile="countis.e53" address="172.16.4.92" slave="56" name="PDU7 Incomer" />
-	  <Device profile="countis.e53" address="172.16.4.92" slave="57" name="PDU8 Incomer" />
-	  <Device profile="countis.e53" address="172.16.4.92" slave="58" name="PDU9 Incomer" />
-	  <Device profile="countis.e53" address="172.16.4.92" slave="59" name="PDU10 Incomer" />
-	  <Device profile="countis.e53" address="172.16.4.92" slave="" name="PDU11 Incomer" />
+		<Device profile="countis.e53" address="172.16.4.92" slave="50" name="PDU1 Incomer" />
+		<Device profile="countis.e53" address="172.16.4.92" slave="51" name="PDU2 Incomer" />
+		<Device profile="countis.e53" address="172.16.4.92" slave="52" name="PDU3 Incomer" />
+		<Device profile="countis.e53" address="172.16.4.92" slave="53" name="PDU4 Incomer" />
+		<Device profile="countis.e53" address="172.16.4.92" slave="54" name="PDU5 Incomer" />
+		<Device profile="countis.e53" address="172.16.4.92" slave="55" name="PDU6 Incomer" />
+		<Device profile="countis.e53" address="172.16.4.92" slave="56" name="PDU7 Incomer" />
+		<Device profile="countis.e53" address="172.16.4.92" slave="57" name="PDU8 Incomer" />
+		<Device profile="countis.e53" address="172.16.4.92" slave="58" name="PDU9 Incomer" />
+		<Device profile="countis.e53" address="172.16.4.92" slave="59" name="PDU10 Incomer" />
+		<Device profile="countis.e53" address="172.16.4.92" slave="" name="PDU11 Incomer" />
 	</Room>
 </Site>
