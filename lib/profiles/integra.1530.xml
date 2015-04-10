@@ -1,5 +1,6 @@
 <Mutator profile="tcp.modbus">
 	<Field manufacturer="Crompton Instruments" />
+	<Field type="Electricity Meter" />
 	<Field product="Integra 1530" />
 	<Field encoding="ieee754" />
 

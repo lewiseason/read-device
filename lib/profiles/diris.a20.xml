@@ -1,5 +1,6 @@
 <Mutator profile="tcp.modbus">
 	<Field manufacturer="Socomec Group" />
+	<Field type="Electricity Meter" />
 	<Field product="Diris A20" />
 	<Field encoding="shift" />
 	<Field version="3" />
