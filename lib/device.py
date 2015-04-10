@@ -15,21 +15,14 @@ class DeviceFinder:
 		self.tree = tree
 		self.config = config
 
-	def find_or_create(self, facets, allow_multiple):
+	def find_or_create(self, facets):
 		""" Try to find the existing node, if there is one. If not, attempt to create one. """
-		if allow_multiple:
-			nodes = self.where(facets)
-		else:
-			nodes = [self.find_by(facets)]
+		nodes = self.where(facets)
 
-		if nodes is not None:
-			return nodes
-		else:
-			return self.create_from(facets)
+		if not nodes:
+			nodes = [self.create_from(facets)]
 
-	def find_by(self, facets):
-		matches = self.where(facets)
-		return self.match(matches)
+		return nodes
 
 	def where(self, facets={}):
 		""" Search for matching Device definitions """
@@ -41,18 +34,6 @@ class DeviceFinder:
 			expression = '//Device'
 
 		return self.tree.xpath(expression)
-
-	def match(self, matches):
-		""" Convert a match list into a match, or fail """
-
-		if len(matches) == 1:
-			return matches[0]
-
-		elif len(matches) == 0:
-			return None
-
-		else:
-			raise Exception("TODO: Ambiguous parameters - %i objects matched" % len(matches))
 
 	def create_from(self, facets):
 		if facets.get('profile') is None:

@@ -40,18 +40,14 @@ class Config(object):
 		for argument in arguments:
 			setattr(self, argument, arguments[argument])
 
-	def instantiate_devices(self, facets, allow_multiple=True):
+	def instantiate_devices(self, facets):
 		# Exclude arguments which aren't defined
 		facets = dict([ [k, facets[k]] for k in facets if facets.get(k) ])
 
-		nodes = self.finder.find_or_create(facets, allow_multiple=allow_multiple)
+		nodes = self.finder.find_or_create(facets)
 		devices = self.factory.create(nodes)
 
 		return devices
-
-	def instantiate_device(self, facets):
-		devices = self.instantiate_devices(facets, allow_multiple=False)
-		return devices[0]
 
 	def instantiate_profile(self, profile_name):
 		return self.factory.get_profile(profile_name=profile_name)
