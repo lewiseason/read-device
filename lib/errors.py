@@ -15,7 +15,7 @@ class DataError(DefinedError):
 
 def handle_exception_normally(exctype, value, traceback):
 	if issubclass(exctype, DefinedError):
-		click.echo(value, err=True)
+		click.echo("%s: %s" % (exctype.__name__, value), err=True)
 	else:
 		# If the exception isn't one of ours, handle it in the default way
 		sys.__excepthook__(exctype, value, traceback)
