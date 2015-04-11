@@ -9,7 +9,6 @@ HERE = path.dirname(__file__)
 
 class Config(object):
 
-	# TODO: Make this configurable
 	profile_paths = [
 		'/etc/read_device/profiles',
 		path.join(HERE, 'profiles'),
@@ -28,6 +27,7 @@ class Config(object):
 		config_path = h.locate_file('configuration', [
 			'~/.read_device/site.xml',
 			'/etc/read_device/site.xml',
+			# TODO: Package should not include configuration file
 			path.join(HERE, '../../config/site.xml'),
 		])
 
