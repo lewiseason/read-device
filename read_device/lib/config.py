@@ -1,9 +1,9 @@
 from os import path
 from lxml import etree
 
-from read_device.lib.device import DeviceFinder, DeviceFactory
-from read_device.lib.formatters import FormatterFactory
-import read_device.lib.helpers as h
+from .device import DeviceFinder, DeviceFactory
+from .formatters import FormatterFactory
+from . import helpers as h
 
 HERE = path.dirname(__file__)
 

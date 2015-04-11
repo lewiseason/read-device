@@ -1,8 +1,8 @@
 import imp
 from lxml import etree
 
-from read_device.lib.helpers import locate_in_dir
-from read_device.lib.errors import *
+from .helpers import locate_in_dir
+from .errors import *
 
 class DeviceFinder:
 	"""

@@ -1,5 +1,5 @@
 import struct
-from read_device.lib.errors import *
+from .errors import *
 
 def shift(words, by):
 	if len(words) is 1:

@@ -2,7 +2,7 @@ import os
 import glob
 import itertools
 
-from read_device.lib.errors import *
+from .errors import *
 
 def locate_file(what, locations, quiet=False):
 	"""
