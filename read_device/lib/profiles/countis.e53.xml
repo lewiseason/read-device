@@ -7,7 +7,7 @@
 
 	<Children>
 		<Property address="0xC568" mode="3" words="2" name="Power" unit="kW" id="P" transform="value / 100" />
-		<Property address="0xC55E" mode="3" words="2" name="Frequency" unit="Hz" id="f" transform="value / 100" />
+		<Property address="0xC55E" mode="3" words="2" name="Frequency" unit="Hz" id="f" transform="round(value / 100, 3)" />
 		<Property address="0xC652" mode="3" words="2" name="Energy" unit="kWh" id="E" />
 	</Children>
 </Mutator>

@@ -5,8 +5,8 @@
 	<Field encoding="ieee754" />
 
 	<Children>
-		<Property address="0x34" mode="4" words="2" name="Power" unit="kW" id="P" transform="int(value / 1000)" />
-		<Property address="0x46" mode="4" words="2" name="Frequency" unit="Hz" id="f" />
-		<Property address="0x48" mode="4" words="2" name="Energy" unit="kWh" id="E" transform="int(value / 1000)" />
+		<Property address="0x34" mode="4" words="2" name="Power" unit="kW" id="P" transform="int(round(value / 1000))" />
+    <Property address="0x46" mode="4" words="2" name="Frequency" unit="Hz" id="f" transform="round(value, 3)" />
+		<Property address="0x48" mode="4" words="2" name="Energy" unit="kWh" id="E" transform="int(round(value / 1000))" />
 	</Children>
 </Mutator>
