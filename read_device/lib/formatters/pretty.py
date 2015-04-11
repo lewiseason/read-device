@@ -10,8 +10,7 @@ class PrettyFormatter(BaseFormatter):
     table = Texttable(max_width=self._termwidth())
 
     table.set_deco(0)
-    # table.header(['Name', 'ID', 'Value', 'Unit'])
-    table.set_cols_align(['l', 'r', 'l', 'l'])
+    table.set_cols_dtype(['t', 'f'])
 
     for property in device.properties:
       label = "%s (%s)" % (property.name, property.id)
