@@ -37,8 +37,9 @@ class TCPModbus(BaseProfile):
 
 	@requires_configuration
 	def read(self, property):
-		attempts = 1
-		response = None
+		attempts  = 1
+		response  = None
+		exception = None
 
 		while True:
 			try:
@@ -47,7 +48,8 @@ class TCPModbus(BaseProfile):
 				elif property.mode is 4:
 					response = self.client.read_input_registers(property.address, property.words, unit=self.slave).registers
 
-			except:
+			except Exception as e:
+				exception = e
 				sleep(0.2)
 
 			finally:
@@ -58,7 +60,14 @@ class TCPModbus(BaseProfile):
 		if response:
 			decoder = decode[self.encoding]
 			property.populate(decoder(response))
-		else:
-			raise PermanentFailure("TODO: The device did not respond")
+		# TODO: Waiting for queued exceptions.
+		# When an exception is raised, pop it on a queue and have the formatter
+		# decide what to do with it *at the end*
+		# else:
+		# 	message = "The device did not respond while trying to retrieve %s" % property.name
+		# 	if exception:
+		# 		message += " (The original error was a %s)" % exception.__class__.__name__
+
+		# 	raise ResponseError(message)
 
 profile = TCPModbus

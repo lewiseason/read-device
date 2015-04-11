@@ -13,6 +13,9 @@ class ConfigurationError(DefinedError):
 class DataError(DefinedError):
 	pass
 
+class ResponseError(DefinedError):
+	pass
+
 def handle_exception_normally(exctype, value, traceback):
 	if issubclass(exctype, DefinedError):
 		click.echo("%s: %s" % (exctype.__name__, value), err=True)
