@@ -1,4 +1,4 @@
-import os
+import click
 from texttable import Texttable
 
 from read_device.lib.resources import BaseFormatter
@@ -57,7 +57,6 @@ class PrettyFormatter(BaseFormatter):
       return ""
 
   def _termwidth(self):
-    _, columns = os.popen('stty size', 'r').read().split()
-    return int(columns)
+    return click.get_terminal_size()[0]
 
 formatter = PrettyFormatter
