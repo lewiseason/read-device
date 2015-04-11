@@ -1,7 +1,7 @@
 import os
 from texttable import Texttable
 
-from lib.resources import BaseFormatter
+from read_device.lib.resources import BaseFormatter
 
 class PrettyFormatter(BaseFormatter):
 

@@ -1,4 +1,4 @@
-from lib.resources import BaseFormatter
+from read_device.lib.resources import BaseFormatter
 
 """
 Formatter for Cacti data input method.

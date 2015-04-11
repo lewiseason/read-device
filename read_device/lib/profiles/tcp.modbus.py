@@ -2,9 +2,9 @@ from time import sleep
 from pymodbus.client.sync import ModbusTcpClient
 import pymodbus.exceptions as mb_exceptions
 
-from lib.resources import BaseProfile, Property, requires_configuration
-from lib.decoders import decode
-from lib.errors import *
+from read_device.lib.resources import BaseProfile, Property, requires_configuration
+from read_device.lib.decoders import decode
+from read_device.lib.errors import *
 
 
 class TCPModbus(BaseProfile):

@@ -5,7 +5,7 @@ from lib.errors import *
 
 pass_config = click.make_pass_decorator(Config)
 
-formatters = ['pretty', 'cacti', 'csv']
+formatters = ['pretty', 'cacti']
 
 @click.group()
 @click.option('-q', '--quiet', is_flag=True,
@@ -18,11 +18,11 @@ def main(ctx, **kwargs):
 	Query the state of various types of hardware.
 	"""
 
+	# If the quiet flag is passed, don't report exceptions.
+	set_exception_handler(kwargs['quiet'])
+
 	config  = Config(kwargs)
 	ctx.obj = config
-
-	# If the quiet flag is passed, don't report exceptions.
-	set_exception_handler(config.quiet)
 
 @main.command()
 @click.option('-n', '--name',

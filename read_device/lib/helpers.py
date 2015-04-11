@@ -2,6 +2,8 @@ import os
 import glob
 import itertools
 
+from read_device.lib.errors import *
+
 def locate_file(what, locations, quiet=False):
 	"""
 	Try and find a file in multiple locations.
@@ -17,7 +19,7 @@ def locate_file(what, locations, quiet=False):
 	if quiet:
 		return None
 
-	raise FileNotFoundError("The %s file could not be found in any of these locations: %s" % (what, ', '.join(locations)))
+	raise ConfigurationError("The %s file could not be found in any of these locations: %s" % (what, ', '.join(locations)))
 
 def locate_in_dir(what, locations, join=None, concat=None):
 	locations = map(os.path.expanduser, locations)

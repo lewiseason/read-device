@@ -1,20 +1,23 @@
+from os import path
 from lxml import etree
 
-from lib.device import DeviceFinder, DeviceFactory
-from lib.formatters import FormatterFactory
-import lib.helpers as h
+from read_device.lib.device import DeviceFinder, DeviceFactory
+from read_device.lib.formatters import FormatterFactory
+import read_device.lib.helpers as h
+
+HERE = path.dirname(__file__)
 
 class Config(object):
 
 	# TODO: Make this configurable
 	profile_paths = [
 		'/etc/read_device/profiles',
-		'lib/profiles',
+		path.join(HERE, 'profiles'),
 	]
 
 	formatter_paths = [
 		'/etc/read_device/formatters',
-		'lib/formatters',
+		path.join(HERE, 'formatters'),
 	]
 
 	_formatter = None

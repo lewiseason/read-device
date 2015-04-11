@@ -1,7 +1,7 @@
 import sys
 import threading
 
-from lib.parser import Parser
+from read_device.lib.parser import Parser
 
 class BaseProfile(object):
 		"""

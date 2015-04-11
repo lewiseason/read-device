@@ -1,9 +1,10 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
-    name='Read Device',
-    version='3.0',
-    py_modules=['command_line'],
+    name='read-device',
+    version='3.1',
+    packages=find_packages(),
+    include_package_data=True,
     install_requires=[
         'Click',
         'lxml',
@@ -11,6 +12,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        device=command_line:main
+        device=read_device.command_line:main
     '''
 )

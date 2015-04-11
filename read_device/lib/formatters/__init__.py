@@ -1,6 +1,6 @@
 import imp
 
-from lib.helpers import locate_in_dir
+from read_device.lib.helpers import locate_in_dir
 
 class FormatterFactory:
 
