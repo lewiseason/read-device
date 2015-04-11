@@ -2,20 +2,18 @@ import sys
 import threading
 
 from .parser import Parser
+from .queue import ChunkedQueue
 
 class BaseProfile(object):
 		"""
 		A base class for every device profile.
 
 		Provides:
-				* a very basic model for threading through queue() and execute()
 				* property lookup on the arguments. eg: d = Device({args...}); p.arg
 				* enforcement of required_arguments if specified on the subclass
 		"""
 
 		configured  = False
-		max_threads = 8
-		threads     = []
 		properties  = []
 
 		profile_name = None
@@ -24,9 +22,9 @@ class BaseProfile(object):
 		manufacturer = None
 
 		def __init__(self, arguments):
-				self.args = arguments
-				self._enforce_required_arguments()
-				self._install_thread_excepthook()
+			self._queue = ChunkedQueue()
+			self.args = arguments
+			self._enforce_required_arguments()
 
 		def configure(self):
 				pass
@@ -35,23 +33,10 @@ class BaseProfile(object):
 				pass
 
 		def queue(self, target, args=(), name=None):
-				thread = threading.Thread(target=target, args=args, name=name or self.address)
-				self.threads.append(thread)
+			self._queue.enqueue(target=target, args=args, name=name or self.address)
 
 		def execute(self):
-				while self.threads:
-						if len(self.threads) > self.max_threads:
-								# There are too many threads to run at once, split into chunks
-								chunk = self.threads[0:self.max_threads]
-						else:
-								chunk = self.threads[:]
-
-						# Start all the threads in the chunk
-						[ thread.start() for thread in chunk ]
-						# And wait for them to complete,
-						# before proceeding to the next chunk, if there is one
-						[ thread.join() for thread in chunk ]
-						del(self.threads[0:self.max_threads])
+			self._queue.execute()
 
 		def __getattr__(self, key):
 				return self.args.get(key)
@@ -59,21 +44,6 @@ class BaseProfile(object):
 		def _enforce_required_arguments(self):
 				if self.required_arguments and not self.required_arguments.issubset(set(self.args)):
 						raise Exception("TODO: The provided data is insufficient to match a single device with no ambiguity on the %s profile." % self.__class__.__name__)
-
-		def _install_thread_excepthook(self):
-			# Python bug: http://bugs.python.org/issue1230540
-			# Threads don't use the excepthook
-			old = threading.Thread.run
-
-			def run(*args, **kwargs):
-				try:
-					old(*args, **kwargs)
-				except:
-					sys.excepthook(*sys.exc_info())
-
-			threading.Thread.run = run
-
-
 
 class BaseFormatter(object):
 		pass
