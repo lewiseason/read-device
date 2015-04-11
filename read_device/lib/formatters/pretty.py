@@ -14,8 +14,13 @@ class PrettyFormatter(BaseFormatter):
     table.set_cols_align(['l', 'r', 'l', 'l'])
 
     for property in device.properties:
-      formatted_value = "{:>} {:<}".format(str(property.value), str(property.unit))
-      table.add_row([property.name, property.value, property.unit, property.id])
+      label = "%s (%s)" % (property.name, property.id)
+      if property.populated:
+        value = "{:>12} {:<}".format(property.value, property.unit)
+      else:
+        value = "{:>12}".format('Error')
+
+      table.add_row([label, value])
 
     return "%s\n\n%s" % (device.name, table.draw())
 

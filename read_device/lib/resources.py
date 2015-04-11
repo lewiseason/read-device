@@ -88,24 +88,27 @@ class Property(object):
 
 		"""
 
+		populated = False
+
 		def __init__(self, args):
 				self.__dict__ = args
 				self.parser = Parser()
 
 				if 'value' in args:
-						self.value = args['value']
+					self.populate(args['value'])
 
 		def __getattr__(self, key):
 				return None
 
 		def populate(self, value):
 				self.value = value
+				self.populated = True
 				return self
 
 		@property
 		def value(self):
 				val = self._value
-				if self.transform:
+				if self.populated and self.transform:
 						# Use the parser to transform the value, based on
 						# a simple math expression.
 						val = self.parser.eval(self.transform, { 'value': val })
