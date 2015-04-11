@@ -8,6 +8,7 @@ class Parser:
 		ast.Div:  operator.truediv,
 		ast.USub: operator.neg,
 		'int':    int,
+		'round':  round,
 	}
 
 	def eval(self, expr, ctx={}):
@@ -27,7 +28,9 @@ class Parser:
 				return self.operators[type(node.op)](self._eval(node.operand))
 			# Function: <function>(<args>, ...)
 			elif isinstance(node, ast.Call):
-				return self.operators[node.func.id](self._eval(*node.args))
+				function  = self.operators[node.func.id]
+				arguments = list(map(self._eval, node.args))
+				return function(*arguments)
 			# Varaible: <variable>
 			elif isinstance(node, ast.Name):
 				return self.variables.get(node.id)
