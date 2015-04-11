@@ -28,7 +28,7 @@ class Config(object):
 		config_path = h.locate_file('configuration', [
 			'~/.read_device/site.xml',
 			'/etc/read_device/site.xml',
-			'config/site.xml',
+			path.join(HERE, '../../config/site.xml'),
 		])
 
 		self.tree = etree.parse(config_path)
