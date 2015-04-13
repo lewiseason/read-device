@@ -37,7 +37,7 @@ def main(ctx, **kwargs):
 def enumerate(config, **kwargs):
 	""" Query all properties of a given device """
 
-	devices = config.instantiate_devices(kwargs)
+	devices = config.devices.find_or_create(kwargs)
 
 	if len(devices) == 1:
 		device = devices[0]
@@ -61,41 +61,24 @@ def hammer(config, **kwargs):
 	"""
 	Query all known devices (optionally filtering by profile or type)
 	"""
-	# The way this command filters is a little different to the others.
-	# Because instantiate_devices does a find_or_create THEN asks DeviceFactory
-	# to actually create the Device, fields loaded from mutators are not available
-	# during the initial query. So we pass an empty dictionary and do the filtering
-	# once all the Devices have been created.
-	#
-	# TODO: A better way would be to load the entire tree (cached in the config
-	# object) with all the created nodes rather than creating the nodes on the fly.
-	# This would mean you could search by all possible fields
-	# searching it with xpath. At that point, the only difference between enumerate
-	# and hammer is that enumerate will only display one result at a time. Some
-	# semantic juggling required.
 	# TODO: Concurrency
-	devices = config.instantiate_devices({})
-
-	if kwargs['profile'] is not None:
-		devices = filter(lambda device: device.profile == kwargs['profile'], devices)
-
-	if kwargs['type'] is not None:
-		devices = filter(lambda device: device.type == kwargs['type'], devices)
+	# TODO: Merge in with enumerate - and prompt yes/no if multiple matches
+	# And in quiet mode either fail, assume yes or accept an argument
+	devices = config.devices.find(kwargs)
 
 	for device in devices:
 		device.enumerate()
-		click.echo(config.formatter.device(device) + "\n")
+		click.echo(config.formatter.device(device))
 
 @main.command()
 @pass_config
 def profiles(config):
 	""" List all available profiles """
 
-	names = config.list_profiles()
-	profiles = [ config.instantiate_profile(name) for name in names ]
+	names = config.profiles
 
 	click.echo(
-		config.formatter.profiles(profiles)
+		config.formatter.profiles(config.profiles)
 	)
 
 # TODO: Pass arguments for filtering, including location, perhaps?
@@ -104,7 +87,7 @@ def profiles(config):
 def list(config, **kwargs):
 	""" List all known devices """
 
-	devices = config.list_devices()
+	devices = config.devices.all()
 
 	click.echo(
 		config.formatter.devices(devices)

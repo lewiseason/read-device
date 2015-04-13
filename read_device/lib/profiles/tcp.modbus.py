@@ -16,15 +16,15 @@ class TCPModbus(BaseProfile):
 	version = 2
 
 	def configure(self):
-		self.slave = int(self.args.get('slave'))
+		self.slave = int(self.slave)
 		self.client = ModbusTcpClient(self.address)
 
-		self.properties = [ self.munge(property) for property in self.args.get('Property')]
+		self.properties = [ self.munge(property) for property in self.Property ]
 
 	def munge(self, property):
-		property['mode']    = int(property['mode'])
-		property['words']   = int(property['words'])
-		property['address'] = int(property['address'], 16)
+		property['mode']    = int(property.get('mode'))
+		property['words']   = int(property.get('words'))
+		property['address'] = int(property.get('address'), 16)
 
 		return Property(property)
 

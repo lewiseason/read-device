@@ -1,13 +1,22 @@
+import functools
 from os import path
 from lxml import etree
 
-from .device import DeviceFinder, DeviceFactory
-from .formatters import FormatterFactory
-from . import helpers as h
+from . import helpers
+from .errors import *
+from .finder import DeviceFinder
+from .factories import ProfileFactory, DeviceFactory, FormatterFactory
 
 HERE = path.dirname(__file__)
 
 class Config(object):
+
+	config_paths = [
+		'~/.read_device/site.xml',
+		'/etc/read_device/site.xml',
+		# TODO: This probably shouldn't exist
+		path.join(HERE, '../../config/site.xml'),
+	]
 
 	profile_paths = [
 		'/etc/read_device/profiles',
@@ -22,55 +31,78 @@ class Config(object):
 	_formatter = None
 
 	def __init__(self, kwargs):
+		config_file = helpers.locate_file('configuration', self.config_paths)
+
 		self.load_interactive(kwargs)
-
-		config_path = h.locate_file('configuration', [
-			'~/.read_device/site.xml',
-			'/etc/read_device/site.xml',
-			# TODO: Package should not include configuration file
-			path.join(HERE, '../../config/site.xml'),
-		])
-
-		self.tree = etree.parse(config_path)
-		self.finder = DeviceFinder(self.tree, self)
-		self.factory = DeviceFactory(self.tree, self)
+		self.load_factories()
+		self.load_profiles()
+		self.load_config(config_file)
+		self.load_devices()
+		self.devices = DeviceFinder(self)
 
 	def load_interactive(self, arguments):
 		"""
 		Adjust configuration based on command-line arguments
 		"""
 
-		for argument in arguments:
-			setattr(self, argument, arguments[argument])
+		for argument, value in arguments.iteritems():
+			setattr(self, argument, value)
 
-	def instantiate_devices(self, facets):
-		# Exclude arguments which aren't defined
-		facets = dict([ [k, facets[k]] for k in facets if facets.get(k) ])
+	def load_factories(self):
+		self.profile_factory = ProfileFactory(self)
+		self.device_factory  = DeviceFactory(self)
 
-		nodes = self.finder.find_or_create(facets)
-		devices = self.factory.create(nodes)
+	def load_config(self, file):
+		self.tree = etree.parse(file)
 
-		return devices
+	def load_profiles(self):
+		files = helpers.multiglob(self.profile_paths, ['*.py', '*.xml'])
+		names = map(helpers.path_to_profile_name, files)
 
-	def instantiate_profile(self, profile_name):
-		return self.factory.get_profile(profile_name=profile_name)
+		self.profiles = self.profile_factory.create(names)
 
-	def list_profiles(self):
-		files = h.multiglob(self.profile_paths, ['*.py', '*.xml'])
-		names = map(h.path_to_profile_name, files)
+	def load_devices(self):
+		self._devices = self.device_factory.from_config()
 
-		return names
+	def create_device(self, profile, arguments):
+		return self.device_factory.from_arguments(profile, arguments)
 
-	def list_devices(self, facets={}):
-		nodes = self.finder.where(facets)
-		return self.factory.create(nodes)
+	def apply_mutator(self, device):
+		"""
+		Map the Fields and Children of a mutator onto the device.
+		"""
+		data = self.walk(device.mutator, max_depth=1)
 
+		for field in data['Field']:
+			(key, value), = field.items()
+			setattr(device, key, value)
 
-	def instantiate_formatter(self, format):
-		return FormatterFactory(self).get_formatter(format)
+		for child_type in data['Children']:
+			(tag, children), = child_type.items()
+			children = map(lambda c: dict(c.items()), children)
+			setattr(device, tag, children)
+
+	def walk(self, node, max_depth=None, depth=0):
+		"""
+		Recursively walk the xml tree of a node, and build
+		lists of the child objects
+		"""
+		data = dict(node.items())
+
+		if node.getchildren():
+			for child in node.getchildren():
+				if not data.get(child.tag):
+					data[child.tag] = []
+
+				if max_depth and depth >= max_depth:
+					data[child.tag].append(child)
+				else:
+					data[child.tag].append(self.walk(child, max_depth=max_depth, depth=depth+1))
+
+		return data
+
 
 	@property
+	@helpers.cached
 	def formatter(self):
-		if self._formatter is None:
-			self._formatter = self.instantiate_formatter(self.format)()
-		return self._formatter
+		return FormatterFactory(self).get_formatter(self.format)()

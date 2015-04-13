@@ -19,6 +19,7 @@ class BaseProfile(object):
 		profile_name = None
 		parent_name = None
 		product = None
+		mutator = None
 		manufacturer = None
 
 		def __init__(self, arguments):
