@@ -54,7 +54,8 @@ class DeviceFactory(object):
 		return devices
 
 	def from_arguments(self, profile, arguments):
-		return profile(arguments)
+		if profile:
+			return profile(arguments)
 
 	def build_path(self, node, path=[]):
 		path = path + [node]

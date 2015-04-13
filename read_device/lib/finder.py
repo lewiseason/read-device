@@ -28,7 +28,9 @@ class DeviceFinder(object):
     if len(matches) > 0:
       return matches
     else:
-      return [self.create(facets)]
+      created = self.create(facets)
+      if created:
+        return [self.create(facets)]
 
   def match(self, device, facets):
     """
