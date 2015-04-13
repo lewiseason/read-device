@@ -1,0 +1,25 @@
+.TH DEVICE 1 "13 April 2015"
+.SH NAME
+device - Query real-world devices for metrics
+.SH SYNOPSIS
+\fBdevice\fP [OPTIONS] COMMAND [ARGS]...
+.SH DESCRIPTION
+\fBdevice\fP has a number of subcommands for working with real-world devices.
+.SS Options
+.TP
+\fB-q, --quiet\fP
+Don't display errors or ask for user input
+.TP
+\fB-f, --format\fP
+Specify the output format to use. \fBdevice\fP is flexible in that it can be made to produce metric output in many formats
+.SH FILES
+.TP
+~/.read_device/site.xml, /etc/read_device/site.xml
+The configuration of all the known devices and global settings
+.TP
+/etc/read_device/profiles
+User-defined profiles may be placed here
+.TP
+/etc/read_device/formatters
+User-defined formatters may be placed here
+.SH CONCEPTS
