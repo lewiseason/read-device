@@ -12,6 +12,8 @@ formatters = ['pretty', 'cacti']
 	default=False, help="Don't prompt or display errors")
 @click.option('-f', '--format', type=click.Choice(formatters),
 	default='pretty', help='Specify an output format. Default: pretty')
+@click.option('-y', '--assumeyes', is_flag=True,
+	default=False, help='Assume yes to any prompts')
 @click.pass_context
 def main(ctx, **kwargs):
 	"""
@@ -33,38 +35,22 @@ def main(ctx, **kwargs):
 	default=None, help='Device-specific sub/slave id')
 @click.option('-p', '--profile',
 	default=None, help='Device profile')
+@click.option('-t', '--type',
+	default=None, help='Device type')
 @pass_config
-def enumerate(config, **kwargs):
+@click.pass_context
+def enumerate(ctx, config, **kwargs):
 	""" Query all properties of a given device """
 
 	devices = config.devices.find_or_create(kwargs)
 
-	if len(devices) == 1:
-		device = devices[0]
-		device.enumerate()
+	if not devices and not config.quiet:
+		click.echo('No devices were matched')
+		ctx.exit(1)
 
-		click.echo(
-			config.formatter.device(device)
-		)
-	elif len(devices) == 0:
-		raise RuntimeError('TODO: No devices matched')
-	else:
-		raise RuntimeError('TODO: Ambiguous request - %i devices matched' % len(devices))
-
-@main.command()
-@click.option('-p', '--profile',
-	default=None, help="Device profile")
-@click.option('-t', '--type',
-	default=None, help="Device type")
-@pass_config
-def hammer(config, **kwargs):
-	"""
-	Query all known devices (optionally filtering by profile or type)
-	"""
-	# TODO: Concurrency
-	# TODO: Merge in with enumerate - and prompt yes/no if multiple matches
-	# And in quiet mode either fail, assume yes or accept an argument
-	devices = config.devices.find(kwargs)
+	if len(devices) > 1:
+		message = "Parameters specified match %i devices. Are you sure?" % len(devices)
+		click.confirm(message, default=config.assumeyes, abort=True)
 
 	for device in devices:
 		device.enumerate()
