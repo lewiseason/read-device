@@ -91,22 +91,4 @@ class Property(object):
 		def value(self, value):
 				self._value = value
 
-class requires_configuration(object):
-		"""
-		Use this decorator on device subclass methods
-		which require the configure() method to have been
-		run at least once beforehand.
-		"""
-		def __init__(self, func):
-				self.func = func
 
-		def __get__(self, obj, type=None):
-				return self.__class__(self.func.__get__(obj, type))
-
-		def __call__(self, *args, **kwargs):
-				profile = self.func.__self__
-				if not profile.configured:
-						profile.configure()
-						profile.configured = True
-
-				return self.func(*args, **kwargs)
