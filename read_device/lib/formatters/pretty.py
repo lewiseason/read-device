@@ -6,34 +6,38 @@ from read_device.lib.resources import BaseFormatter
 class PrettyFormatter(BaseFormatter):
 
 	def device(self, device):
-		# TODO: Way of loading additional fields (web interface version etc)
+		# TODO: Way of loading additional fields (web interface version etc - META)
 		table = Texttable(max_width=self._termwidth())
 
 		table.set_deco(0)
-		table.set_cols_dtype(['t', 'f'])
+		table.set_cols_align(['l', 'r', 'l'])
+
+		table.header([device.name, '', ''])
 
 		for property in device.properties:
-			label = "%s (%s)" % (property.name, property.id)
 			if property.populated:
-				value = "{:>12} {:<}".format(property.value, property.unit)
+				if type(property.value) is bool:
+					value = 'On' if property.value else 'Off'
+				else:
+					value = property.value or ''
 			else:
-				value = "{:>12}".format('Error')
+				value = '-'
 
-			table.add_row([label, value])
+			table.add_row(["%s (%s)" % (property.name, property.id), value, property.unit or ''])
 
-		return "%s\n\n%s" % (device.name, table.draw())
+		return table.draw()
 
 	def profiles(self, profiles):
 		table = Texttable(max_width=self._termwidth())
 
 		table.set_deco(Texttable.VLINES | Texttable.HEADER)
-		table.header(['Name', 'Product', 'Manufacturer', 'Version'])
-		table.set_cols_dtype(['t', 't', 't', 'i'])
+		table.header(['Name', 'Product', 'Manufacturer', 'Version', 'Type'])
+		table.set_cols_dtype(['t', 't', 't', 'i', 't'])
 
 		for profile in profiles.values():
 			# Add an asterisk to the name if the profile has a parent profile
 			name = profile.profile_name if profile.parent_name is None else "%s*" % profile.profile_name
-			table.add_row([name, profile.product, profile.manufacturer, profile.version])
+			table.add_row([name, profile.product, profile.manufacturer, profile.version, profile.type])
 
 		return "\n" + table.draw() + "\n\n* Mutator profile \n"
 
@@ -51,7 +55,9 @@ class PrettyFormatter(BaseFormatter):
 
 	def location(self, path):
 		if len(path) > 1:
-			return path[1].get('name')
+			# ?
+			return "%s[%s]" % (path[1].tag, path[1].get('name'))
+			# return path[1].get('name')
 		else:
 			return ""
 
