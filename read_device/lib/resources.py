@@ -2,7 +2,7 @@ import sys
 import threading
 
 from .parser import Parser
-from .queue import ChunkedQueue
+from .concurrency import WorkQueue
 
 class BaseProfile(object):
 		"""
@@ -23,7 +23,7 @@ class BaseProfile(object):
 		manufacturer = None
 
 		def __init__(self, arguments):
-			self._queue = ChunkedQueue()
+			self._queue = WorkQueue()
 			self.args = arguments
 			self._enforce_required_arguments()
 
@@ -34,7 +34,7 @@ class BaseProfile(object):
 				pass
 
 		def queue(self, target, args=(), name=None):
-			self._queue.enqueue(target=target, args=args, name=name or self.address)
+			self._queue.append(target, args)
 
 		def execute(self):
 			self._queue.execute()

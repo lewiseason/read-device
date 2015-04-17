@@ -2,6 +2,7 @@ import sys
 import click
 
 from .lib.config import Config
+from .lib.concurrency import WorkQueue
 from .lib.helpers import set_exception_handler
 
 pass_config = click.make_pass_decorator(Config)
@@ -44,6 +45,7 @@ def enumerate(ctx, config, **kwargs):
 	""" Query all properties of a given device """
 
 	devices = config.devices.find_or_create(kwargs)
+	queue   = WorkQueue(concurrency=12)
 
 	if not devices and not config.quiet:
 		click.echo('No devices were matched')
@@ -53,8 +55,9 @@ def enumerate(ctx, config, **kwargs):
 		message = "Parameters specified match %i devices. Are you sure?" % len(devices)
 		click.confirm(message, default=config.assumeyes, abort=True)
 
+	[ queue.append(device.enumerate) for device in devices]
+	queue.execute()
 	for device in devices:
-		device.enumerate()
 		click.echo(config.formatter.device(device))
 
 @main.command()
