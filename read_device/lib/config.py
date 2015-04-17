@@ -1,9 +1,7 @@
-import functools
 from os import path
 from lxml import etree
 
 from . import helpers
-from .errors import *
 from .decorators import *
 from .finder import DeviceFinder
 from .factories import ProfileFactory, DeviceFactory, FormatterFactory
