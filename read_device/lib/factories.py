@@ -33,8 +33,6 @@ class DeviceFactory(object):
 
 	def from_config(self):
 		# Load all the devices from profiles and apply mutators
-		devices = []
-
 		for node in self.config.tree.xpath('//Device'):
 			# Look up the profile from the profile cache
 			profile = self.config.profiles.get(node.get('profile'))
@@ -51,9 +49,7 @@ class DeviceFactory(object):
 			if device.mutator is not None:
 				self.config.apply_mutator(device)
 
-			devices.append(device)
-
-		return devices
+			yield device
 
 	def from_arguments(self, profile, arguments):
 		if profile:
