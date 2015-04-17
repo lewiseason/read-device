@@ -44,7 +44,7 @@ class Config(object):
 		Adjust configuration based on command-line arguments
 		"""
 
-		for argument, value in arguments.iteritems():
+		for argument, value in arguments.items():
 			setattr(self, argument, value)
 
 	def load_factories(self):

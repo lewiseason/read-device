@@ -37,7 +37,7 @@ class DeviceFinder(object):
     Test each facet requested, and if it fails, bail out.
     If the device passes all these facet 'tests' it's a match
     """
-    for facet, value in facets.iteritems():
+    for facet, value in facets.items():
       if getattr(device, facet) != value:
         return False
 
