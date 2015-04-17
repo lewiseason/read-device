@@ -23,7 +23,7 @@ def main(ctx, **kwargs):
 	"""
 
 	# If the quiet flag is passed, don't report exceptions.
-	set_exception_handler(kwargs['quiet'])
+	set_exception_handler(quiet=kwargs['quiet'])
 
 	config  = Config(kwargs)
 	ctx.obj = config
@@ -57,6 +57,7 @@ def enumerate(ctx, config, **kwargs):
 			click.confirm(message, default=False, abort=True)
 
 	[ queue.append(device.enumerate) for device in devices]
+
 	queue.execute()
 	for device in devices:
 		click.echo(config.formatter.device(device))

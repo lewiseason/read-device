@@ -73,7 +73,7 @@ class ProfileFactory(object):
 		self.config = config
 
 	def create(self, what):
-		if type(what) is list:
+		if type(what) in (list, map):
 			return { w: self.create_one(w) for w in what }
 		else:
 			return self.create_one(what)
@@ -98,7 +98,10 @@ class ProfileFactory(object):
 
 		if profile_path:
 			# Try to import the specified file
-			profile = imp.load_source('profile', profile_path).profile
+			try:
+				profile = imp.load_source('profile', profile_path).profile
+			except AttributeError:
+				raise ConfigurationError("Couldn't load profile from %s. Is the profile variable defined?" % profile_path)
 		else:
 			# Try to load the given mutator and attach it to the profile
 			profile, mutator = self._from_mutator(name)
