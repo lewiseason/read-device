@@ -4,6 +4,7 @@ from lxml import etree
 
 from . import helpers
 from .errors import *
+from .decorators import *
 from .finder import DeviceFinder
 from .factories import ProfileFactory, DeviceFactory, FormatterFactory
 
@@ -103,6 +104,6 @@ class Config(object):
 
 
 	@property
-	@helpers.cached
+	@cached
 	def formatter(self):
 		return FormatterFactory(self).get_formatter(self.format)()

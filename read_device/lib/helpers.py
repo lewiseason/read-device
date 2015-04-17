@@ -60,34 +60,20 @@ def path_to_profile_name(path):
 	name, _ = os.path.splitext(path)
 	return name
 
-import collections
-import functools
+def handle_exception_normally(exctype, value, traceback):
+	if issubclass(exctype, DefinedError):
+		click.echo("%s: %s" % (exctype.__name__, value), err=True)
+	else:
+		# If the exception isn't one of ours, handle it in the default way
+		sys.__excepthook__(exctype, value, traceback)
 
-class cached(object):
-	"""
-	Cache a property value instead of re-evaluating it every time.
+def handle_exception_quietly(exctype, value, traceback):
+	# Obviously, if the exception occurs in a thread (which is quite likely)
+	# this exit code will never go anywhere.
+	sys.exit(255)
 
-	https://wiki.python.org/moin/PythonDecoratorLibrary#Memoize
-	"""
-
-	def __init__(self, func):
-		self.func  = func
-		self.cache = {}
-
-	def __call__(self, *args):
-		if not isinstance(args, collections.Hashable):
-			# We can't cache this effectively
-			return self.func(*args)
-		if args in self.cache:
-			return self.cache[args]
-		else:
-			value = self.func(*args)
-			self.cache[args] = value
-			return value
-
-	def __repr__(self):
-		return self.func.__doc__
-
-	def __get__(self, obj, objtype):
-		# Support for instance methods
-		return functools.partial(self.__call__, obj)
+def set_exception_handler(quiet):
+	if quiet:
+		sys.excepthook = handle_exception_quietly
+	else:
+		sys.excepthook = handle_exception_normally

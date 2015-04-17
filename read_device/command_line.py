@@ -1,7 +1,8 @@
 import sys
 import click
+
 from .lib.config import Config
-from .lib.errors import *
+from .lib.helpers import set_exception_handler
 
 pass_config = click.make_pass_decorator(Config)
 
