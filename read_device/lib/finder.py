@@ -24,8 +24,9 @@ class DeviceFinder(object):
     return self.config.create_device(profile, facets)
 
   def find_or_create(self, facets):
-    matches = self.find(facets)
-    if len(matches) > 0:
+    matches = list(self.find(facets))
+
+    if matches:
       return matches
     else:
       created = self.create(facets)
