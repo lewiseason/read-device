@@ -3,6 +3,7 @@ from lxml import etree
 
 from . import helpers
 from .errors import *
+
 class FormatterFactory:
 
 	def __init__(self, config):
@@ -19,7 +20,7 @@ class FormatterFactory:
 			return formatter
 
 		except AttributeError:
-			raise Exception("Could not load formatter (ensure the file contains the 'formatter' variable)")
+			raise Exception("TODO: Could not load formatter (ensure the file contains the 'formatter' variable)")
 
 	def locate_formatter(self, formatter_name):
 		return helpers.locate_in_dir('formatter', self.config.formatter_paths,
@@ -86,7 +87,7 @@ class ProfileFactory(object):
 
 		if type(_from) is str:
 			profile = self._from_name(_from)
-		elif type(_from) == lxml.etree._Element:
+		elif type(_from) == etree._Element:
 			profile = self._from_node(_from)
 
 		return profile

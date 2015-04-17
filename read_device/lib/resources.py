@@ -18,6 +18,7 @@ class BaseProfile(object):
 
 		profile_name = None
 		parent_name = None
+		type = ''
 		product = None
 		mutator = None
 		manufacturer = None

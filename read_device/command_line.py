@@ -53,7 +53,8 @@ def enumerate(ctx, config, **kwargs):
 
 	if len(devices) > 1:
 		message = "Parameters specified match %i devices. Are you sure?" % len(devices)
-		click.confirm(message, default=config.assumeyes, abort=True)
+		if not config.assumeyes:
+			click.confirm(message, default=False, abort=True)
 
 	[ queue.append(device.enumerate) for device in devices]
 	queue.execute()
