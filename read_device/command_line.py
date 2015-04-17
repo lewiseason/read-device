@@ -7,7 +7,7 @@ from .lib.helpers import set_exception_handler
 
 pass_config = click.make_pass_decorator(Config)
 
-formatters = ['pretty', 'cacti']
+formatters = Config.formatters()
 
 @click.group()
 @click.option('-q', '--quiet', is_flag=True,

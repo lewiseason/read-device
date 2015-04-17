@@ -61,7 +61,7 @@ class Config(object):
 		self.profiles = self.profile_factory.create(names)
 
 	def load_devices(self):
-		self._devices = self.device_factory.from_config()
+		self._devices = list(self.device_factory.from_config())
 
 	def create_device(self, profile, arguments):
 		return self.device_factory.from_arguments(profile, arguments)
@@ -100,6 +100,10 @@ class Config(object):
 
 		return data
 
+	@classmethod
+	def formatters(klass):
+		files = helpers.multiglob(klass.formatter_paths, ['*.py'])
+		return list(map(helpers.path_to_profile_name, files))
 
 	@property
 	@cached
