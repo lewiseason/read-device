@@ -1,7 +1,11 @@
 import sys
-import queue
 from threading import Thread
 from functools import partial
+
+try:
+	import queue
+except ImportError:
+	import Queue as queue
 
 class Worker(object):
 
