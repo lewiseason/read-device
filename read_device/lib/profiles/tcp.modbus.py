@@ -1,7 +1,7 @@
 import pymodbus.client.sync
 import pymodbus.exceptions
 
-from read_device.lib.resources import BaseProfile, Property, requires_configuration
+from read_device.lib.resources import BaseProfile, Property
 from read_device.lib.decoders import decode
 from read_device.lib.decorators import *
 
@@ -14,10 +14,11 @@ class TCPModbus(BaseProfile):
 	version = 2
 
 	def configure(self):
-		self.slave = int(self.slave)
-		self.client = ModbusTcpClient(self.address)
+		self.slave  = int(self.slave)
+		self.client = pymodbus.client.sync.ModbusTcpClient(self.address)
 
 		self.properties = [ self.munge(property) for property in self.Property ]
+		self.decoder    = decode[self.encoding]
 
 	def munge(self, property):
 		property['mode']    = int(property.get('mode'))
