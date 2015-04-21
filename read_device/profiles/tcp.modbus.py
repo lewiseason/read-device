@@ -1,9 +1,9 @@
 import pymodbus.client.sync
 import pymodbus.exceptions
 
-from read_device.lib.resources import BaseProfile, Property
-from read_device.lib.decoders import decode
-from read_device.lib.decorators import *
+from .resources import BaseProfile
+from .decorators import *
+from .decoders import decode
 
 class TCPModbus(BaseProfile):
 
@@ -17,15 +17,13 @@ class TCPModbus(BaseProfile):
 		self.slave  = int(self.slave)
 		self.client = pymodbus.client.sync.ModbusTcpClient(self.address)
 
-		self.properties = [ self.munge(property) for property in self.Property ]
+		self.properties = [ self.to_property(data) for data in self.Property ]
 		self.decoder    = decode[self.encoding]
 
-	def munge(self, property):
-		property['mode']    = int(property.get('mode'))
-		property['words']   = int(property.get('words'))
-		property['address'] = int(property.get('address'), 16)
-
-		return Property(property)
+	def munge(self, data):
+		data['mode']    = int(data.get('mode'))
+		data['words']   = int(data.get('words'))
+		data['address'] = int(data.get('address'), 16)
 
 	@requires_configuration
 	def enumerate(self):
@@ -37,8 +35,10 @@ class TCPModbus(BaseProfile):
 	@requires_configuration
 	@attempts(3, AttributeError, pymodbus.exceptions.ConnectionException)
 	def read(self, property):
-		if   property.mode is 3: method = self.client.read_holding_registers
-		elif property.mode is 4: method = self.client.read_input_registers
+		if property.mode is 3:
+			method = self.client.read_holding_registers
+		elif property.mode is 4:
+			method = self.client.read_input_registers
 
 		response = method(property.address, property.words, unit=self.slave).registers
 		property.populate(self.decoder(response))

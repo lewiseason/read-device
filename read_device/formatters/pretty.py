@@ -1,9 +1,7 @@
 import click
 from texttable import Texttable
 
-from read_device.lib.resources import BaseFormatter
-
-class PrettyFormatter(BaseFormatter):
+class PrettyFormatter:
 
 	def device(self, device):
 		# TODO: Way of loading additional fields (web interface version etc - META)

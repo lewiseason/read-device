@@ -4,9 +4,8 @@ from lxml import etree
 import requests
 from collections import namedtuple
 
-from read_device.lib.resources import BaseProfile, Property
-from read_device.lib.decoders import decode
-from read_device.lib.decorators import *
+from .resources import BaseProfile
+from .decorators import *
 
 Module = namedtuple('Module', ['name', 'prefix', 'transforms', 'fields'])
 
@@ -18,8 +17,6 @@ class TrendIQ3(BaseProfile):
 	product = 'IQ3xite'
 	version = 1
 	type = 'BEMS Controller'
-
-	properties = []
 
 	known_modules = [
 		Module('Sensor',        'S', ['to_decimal', 'strip_no_units'], ['id', 'name', 'value', 'unit', None]),
@@ -36,19 +33,20 @@ class TrendIQ3(BaseProfile):
 	def enumerate(self, properties=None):
 		# TODO: Do something with properties instead of scraping the whole thing
 		# TODO: Check if the module exists before trying to read it
+		# TODO: Bigger thing - it'd probably be nice if this was a generator that yielded properties, rather than
+		# storing them on the object?
 		for module in self.known_modules:
 			self.queue(self.read_module, (module,))
 
 		self.execute()
 
+	@requires_configuration
 	def read_module(self, module):
-		reads = 0
-		start = 0
+		reads = start = 0
 
 		while True:
 			records, start = self.get_page(module, start)
-
-			[ self.create_property(data) for data in records ]
+			self.properties += [ self.to_property(data) for data in records ]
 
 			if reads > 0 and start == 0:
 				break
@@ -67,11 +65,6 @@ class TrendIQ3(BaseProfile):
 
 		return data, next_page
 
-	def create_property(self, data):
-		property = Property(data)
-
-		self.properties.append(property)
-
 	def _nodes_to_dict(self, module, nodes):
 		values = nodes.xpath('td/text() | td/a/text() | td/input[@type="text"]/@value')
 		# Combine the values (list) with the list of fields for this module
@@ -80,12 +73,14 @@ class TrendIQ3(BaseProfile):
 		values.pop(None, None)
 		# Apply any transforms defined in the module (in order, obviously)
 		for name in module.transforms:
-			transform = getattr(self, name)
+			transform = getattr(Transforms, name)
 			values = transform(values)
 
 		return values
 
-	def to_boolean(self, values):
+class Transforms:
+	@classmethod
+	def to_boolean(klass, values):
 		value  = values['value'].lower()
 		truthy = ['on', 'true', 'yes']
 		falsey = ['off', 'false', 'no']
@@ -98,7 +93,8 @@ class TrendIQ3(BaseProfile):
 
 		return values
 
-	def to_decimal(self, values):
+	@classmethod
+	def to_decimal(klass, values):
 		d = Decimal(values['value'])
 
 		if d.is_normal():
@@ -108,7 +104,8 @@ class TrendIQ3(BaseProfile):
 
 		return values
 
-	def strip_no_units(self, values):
+	@classmethod
+	def strip_no_units(klass, values):
 		no_units = ['no', 'no.']
 
 		if values['unit'].lower() in no_units:

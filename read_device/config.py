@@ -14,7 +14,7 @@ class Config(object):
 		'~/.read_device/site.xml',
 		'/etc/read_device/site.xml',
 		# TODO: This probably shouldn't exist
-		path.join(HERE, '../../config/site.xml'),
+		path.join(HERE, '../config/site.xml'),
 	]
 
 	profile_paths = [

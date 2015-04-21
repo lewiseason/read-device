@@ -1,10 +1,8 @@
-from read_device.lib.resources import BaseFormatter
-
 """
 Formatter for Cacti data input method.
 http://docs.cacti.net/manual:087:3a_advanced_topics.1_data_input_methods
 """
-class CactiFormatter(BaseFormatter):
+class CactiFormatter:
 	def device(self, device):
 		parts = []
 

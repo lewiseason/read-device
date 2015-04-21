@@ -54,7 +54,8 @@ class attempts(object):
 				break
 		else:
 			if info:
-				sys.excepthook(*info)
+				# sys.excepthook(*info)
+				raise RuntimeError('TODO: Controller failed after %%i attempts')
 
 class cached(object):
 	"""

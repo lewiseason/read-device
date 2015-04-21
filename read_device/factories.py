@@ -16,7 +16,7 @@ class FormatterFactory:
 			raise Exception("TODO: Could not find formatter %s" % name)
 
 		try:
-			formatter = imp.load_source('formatter', path).formatter
+			formatter = imp.load_source('read_device.formatter', path).formatter
 			return formatter
 
 		except AttributeError:
@@ -95,7 +95,7 @@ class ProfileFactory(object):
 		if profile_path:
 			# Try to import the specified file
 			try:
-				profile = imp.load_source('profile', profile_path).profile
+				profile = imp.load_source('read_device.profile', profile_path).profile
 			except AttributeError:
 				raise ConfigurationError("Couldn't load profile from %s. Is the profile variable defined?" % profile_path)
 		else:

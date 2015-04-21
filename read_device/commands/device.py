@@ -1,12 +1,11 @@
 import sys
 import click
 
-from .lib.config import Config
-from .lib.concurrency import WorkQueue
-from .lib.helpers import set_exception_handler
+from ..config import Config
+from ..concurrency import WorkQueue
+from ..helpers import set_exception_handler
 
 pass_config = click.make_pass_decorator(Config)
-
 formatters = Config.formatters()
 
 @click.group()

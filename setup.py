@@ -13,6 +13,10 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        device=read_device.command_line:main
+        device=read_device.commands.device:main
+        meters=read_device.commands.meters:main
     '''
 )
+#
+        # device=read_device.command_line:device.main
+        # record=read_device.command_line:record.main

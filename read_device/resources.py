@@ -40,15 +40,17 @@ class BaseProfile(object):
 		def execute(self):
 			self._queue.execute()
 
+		def to_property(self, data):
+			if getattr(self, 'munge'):
+				self.munge(data)
+			return Property(data)
+
 		def __getattr__(self, key):
 				return self.args.get(key)
 
 		def _enforce_required_arguments(self):
 				if self.required_arguments and not self.required_arguments.issubset(set(self.args)):
 						raise Exception("TODO: The provided data is insufficient to match a single device with no ambiguity on the %s profile." % self.__class__.__name__)
-
-class BaseFormatter(object):
-		pass
 
 class Property(object):
 		"""
