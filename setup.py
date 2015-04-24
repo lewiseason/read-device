@@ -10,6 +10,7 @@ setup(
         'lxml',
         'texttable',
         'requests',
+        'peewee',
     ],
     entry_points='''
         [console_scripts]

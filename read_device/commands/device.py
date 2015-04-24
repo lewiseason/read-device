@@ -1,7 +1,7 @@
 import sys
 import click
 
-from ..config import Config
+from ..config import DeviceConfig as Config
 from ..concurrency import WorkQueue
 from ..helpers import set_exception_handler
 

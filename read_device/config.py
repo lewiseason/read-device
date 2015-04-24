@@ -109,3 +109,28 @@ class Config(object):
 	@cached
 	def formatter(self):
 		return FormatterFactory(self).get_formatter(self.format)()
+
+class DeviceConfig(Config):
+	pass
+
+import json
+
+from . import database
+
+class MetersConfig(Config):
+
+	def load_data(self, file):
+		self.data = json.loads(file.read().decode('utf-8'))
+
+	@property
+	def db(self):
+		database.connect(self.dbpath)
+		return database
+
+	@property
+	@cached
+	def dbpath(self):
+		if self.dbname is not None:
+			return self.dbname
+
+		return 'a.db'
