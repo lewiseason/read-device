@@ -58,8 +58,8 @@ def enumerate(ctx, config, **kwargs):
 	[ queue.append(device.enumerate) for device in devices]
 
 	queue.execute()
-	for device in devices:
-		click.echo(config.formatter.device(device))
+
+	click.echo(config.formatter.devices(devices, summary=False))
 
 @main.command()
 @pass_config
@@ -80,6 +80,4 @@ def list(config, **kwargs):
 
 	devices = config.devices.all()
 
-	click.echo(
-		config.formatter.devices(devices)
-	)
+	click.echo(config.formatter.devices(devices, summary=True))

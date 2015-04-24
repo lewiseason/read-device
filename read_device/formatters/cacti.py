@@ -3,7 +3,11 @@ Formatter for Cacti data input method.
 http://docs.cacti.net/manual:087:3a_advanced_topics.1_data_input_methods
 """
 class CactiFormatter:
-	def device(self, device):
+
+	def devices(self, devices, **kwargs):
+		return ' '.join([ self._device(device) for device in devices ])
+
+	def _device(self, device):
 		parts = []
 
 		for property in device.properties:
