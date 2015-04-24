@@ -1,5 +1,5 @@
 import struct
-from .errors import *
+from . import errors
 
 def shift(words, by):
 	if len(words) is 1:
@@ -9,7 +9,7 @@ def shift(words, by):
 		hi, lo = tuple(words)
 		return (hi << by) + lo
 
-	raise DataError('Tried to shift %i words by %i bits.' % (len(words), by))
+	raise errors.DataError('Tried to shift %i words by %i bits.' % (len(words), by))
 
 def shift16(words):
 	return shift(words, 16)

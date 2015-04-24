@@ -2,7 +2,7 @@ from os import path
 from lxml import etree
 
 from . import helpers
-from .decorators import *
+from .decorators import cached
 from .finder import DeviceFinder
 from .factories import ProfileFactory, DeviceFactory, FormatterFactory
 

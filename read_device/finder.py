@@ -6,10 +6,11 @@ class DeviceFinder(object):
   def all(self):
     return self.find()
 
-  def find(self, facets={}):
+  def find(self, facets=None):
     """
     Return any devices which match the dictionary of facets passed in
     """
+    facets = facets or {}
 
     # Strip facets which are not defined
     facets = dict([ [k, facets[k]] for k in facets if facets.get(k) ])
@@ -17,7 +18,9 @@ class DeviceFinder(object):
     matcher = lambda device: self.match(device, facets)
     return filter(matcher, self.config._devices)
 
-  def create(self, facets={}):
+  def create(self, facets=None):
+    facets = facets or {}
+
     profile_name = facets.get('profile')
     profile = self.config.profiles.get(profile_name)
 

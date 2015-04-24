@@ -11,8 +11,8 @@ class Parser:
 		'round':  round,
 	}
 
-	def eval(self, expr, ctx={}):
-		self.variables = ctx
+	def eval(self, expr, ctx=None):
+		self.variables = ctx or {}
 		return self._eval(ast.parse(expr, mode='eval').body)
 
 	def _eval(self, node):

@@ -3,10 +3,9 @@ from threading import Thread
 from functools import partial
 
 try:
-	import queue
+	import queue # Python 3
 except ImportError:
-	import Queue as queue
-
+	import Queue as queue # Python 2
 
 def Worker(q, blocking=False):
 	while True:
@@ -28,7 +27,7 @@ class WorkQueue(object):
 		self.queue = queue.Queue()
 		self.workers = [ Thread(target=Worker, args=(self.queue,)) for _ in range(concurrency) ]
 
-	def append(self, target, args=[]):
+	def append(self, target, args=()):
 		task = partial(target, *args)
 		self.queue.put(task)
 
