@@ -7,18 +7,21 @@ try:
 except ImportError:
 	import Queue as queue
 
-class Worker(object):
 
-	def __init__(self, q, blocking=False):
-		self.queue = q
-
-		while True:
-			try:
-				item = self.queue.get(blocking)
-				item()
-				self.queue.task_done()
-			except queue.Empty:
-				break
+def Worker(q, blocking=False):
+	while True:
+		try:
+			item = q.get(blocking)
+			item()
+			q.task_done()
+		except queue.Empty:
+			break
+		except:
+			# If an exception is raised, mark the job as done (so that the queue empties instead of hanging forever)
+			# And then trigger the exception as normal. This is a bit like a "finally" block, but we don't want to fire
+			# if the exception raised was queue.Empty
+			q.task_done()
+			raise
 
 class WorkQueue(object):
 	def __init__(self, concurrency=3):
