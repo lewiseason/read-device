@@ -9,16 +9,16 @@ except ImportError:
 
 class Worker(object):
 
-	def __init__(self, queue):
-		self.queue = queue
+	def __init__(self, q, blocking=False):
+		self.queue = q
 
 		while True:
-			item = self.queue.get()
-
 			try:
+				item = self.queue.get(blocking)
 				item()
-			finally:
 				self.queue.task_done()
+			except queue.Empty:
+				break
 
 class WorkQueue(object):
 	def __init__(self, concurrency=3):
