@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='read-device',
-    version='3.1.5',
+    version='3.1.7',
     description='Collect metrics from real-world devices',
     #url=''
     classifiers=[

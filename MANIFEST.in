@@ -1,0 +1,1 @@
+recursive-include read_device/profiles/*.xml

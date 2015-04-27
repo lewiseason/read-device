@@ -70,7 +70,7 @@ class ProfileFactory(object):
 
 	def create(self, what):
 		if type(what) in (list, map):
-			return map(lambda w: self.create_one(w) )
+			return dict([ (w, self.create_one(w)) for w in what ])
 		else:
 			return self.create_one(what)
 
