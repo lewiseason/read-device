@@ -23,7 +23,7 @@ class PrettyFormatter:
 				if type(property.value) is bool:
 					value = 'On' if property.value else 'Off'
 				else:
-					value = property.value or ''
+					value = property.value
 			else:
 				value = '-'
 
