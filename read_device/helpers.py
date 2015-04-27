@@ -2,6 +2,8 @@ import os
 import glob
 import itertools
 
+import click
+
 from .errors import *
 
 def locate_file(what, locations, quiet=False):
@@ -53,6 +55,8 @@ def multiglob(locations, patterns):
 
 			files = itertools.chain(files, matches)
 
+	# Remove any files which contain __init__.py
+	files = [ f for f in files if '__init__.py' not in f ]
 	return files
 
 def path_to_profile_name(path):
