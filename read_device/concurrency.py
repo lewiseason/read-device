@@ -3,24 +3,26 @@ from threading import Thread
 from functools import partial
 
 try:
-	import queue # Python 3
+	import queue
 except ImportError:
 	import Queue as queue # Python 2
 
 def Worker(q, blocking=False):
 	while True:
+		item = None
+
 		try:
 			item = q.get(blocking)
-			item()
-			q.task_done()
 		except queue.Empty:
-			break
+			return
+
+		try:
+			item()
 		except:
-			# If an exception is raised, mark the job as done (so that the queue empties instead of hanging forever)
-			# And then trigger the exception as normal. This is a bit like a "finally" block, but we don't want to fire
-			# if the exception raised was queue.Empty
+			# This perhaps isn't always the best thing to do.
+			sys.excepthook(*sys.exc_info())
+		finally:
 			q.task_done()
-			raise
 
 class WorkQueue(object):
 	def __init__(self, concurrency=3):
