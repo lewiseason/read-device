@@ -3,6 +3,8 @@ from setuptools import setup, find_packages
 setup(
     name='read-device',
     version='3.1',
+    author='Lewis Eason',
+    author_email='me@lewiseason.co.uk'
     packages=find_packages(),
     include_package_data=True,
     install_requires=[

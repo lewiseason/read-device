@@ -33,7 +33,7 @@ class TCPModbus(BaseProfile):
 		self.execute()
 
 	@requires_configuration
-	@attempts(3, AttributeError, pymodbus.exceptions.ConnectionException)
+	@attempts(3, 0.2, AttributeError, pymodbus.exceptions.ConnectionException)
 	def read(self, property):
 		if property.mode is 3:
 			method = self.client.read_holding_registers
