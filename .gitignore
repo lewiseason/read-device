@@ -6,3 +6,6 @@ __pycache__
 
 # Virtual Environments
 /env[23]
+
+# Configuration
+/config
