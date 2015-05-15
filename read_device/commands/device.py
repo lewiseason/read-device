@@ -78,11 +78,14 @@ def profiles(config):
 		config.formatter.profiles(config.profiles)
 	)
 
-# TODO: Pass arguments for filtering, including location, perhaps?
 @main.command()
 @pass_config
 def list(config, **kwargs):
-	""" List all known devices """
+	"""!
+	List all known devices
+
+	@todo More arguments for filtering (including location, perhaps)
+  """
 
 	devices = config.devices.all()
 

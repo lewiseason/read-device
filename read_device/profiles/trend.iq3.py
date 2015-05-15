@@ -29,15 +29,18 @@ class TrendIQ3(BaseProfile):
 	]
 
 	def configure(self):
-		# TODO: self.meta['controller_version'] = ...
+		"""!
+		@todo self.meta['controller_version'] = ...
+		"""
 		pass
 
 	@requires_configuration
 	def enumerate(self, properties=None):
-		# TODO: Do something with properties instead of scraping the whole thing
-		# TODO: Check if the module exists before trying to read it
-		# TODO: Bigger thing - it'd probably be nice if this was a generator that yielded properties, rather than
-		# storing them on the object?
+		"""!
+		@todo Do something with properties instead of scraping the whole thing
+		@todo Check if the module exists before trying to read it
+		"""
+		
 		for module in self.known_modules:
 			self.queue(self.read_module, (module,))
 

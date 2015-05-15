@@ -41,7 +41,6 @@ class Parser:
 				raise TypeError(node)
 
 		except:
-			# TODO: Handle this better
 			e = Exception("TODO: There was a problem interpreting the results from the device")
 			e.__cause__ = None
 

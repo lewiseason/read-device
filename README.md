@@ -7,6 +7,7 @@ Author: Lewis Eason <me@lewiseason.co.uk>
 * [ ] Write useful man pages
 * [ ] Analyse concurrency/performance
 * [ ] Packaging? Not hard to bundle in an RPM package, symlink groff files and create `/etc/read_device`
+* [ ] Improved exceptions. Use standard ones more, and write sensible messages
 
 ## Installation
 

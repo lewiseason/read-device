@@ -12,11 +12,13 @@ from .factories import ProfileFactory, DeviceFactory, FormatterFactory
 HERE = path.dirname(__file__)
 
 class Config(object):
+	"""!
+	@todo config_paths shouldn't look for a relative config file
+	"""
 
 	config_paths = [
 		'~/.read_device/site.xml',
 		'/etc/read_device/site.xml',
-		# TODO: This probably shouldn't exist
 		path.join(HERE, '../config/site.xml'),
 	]
 

@@ -13,7 +13,9 @@ class PrettyFormatter:
 			return '\n'.join([ self.device(device) for device in devices ])
 
 	def device(self, device):
-		# TODO: Way of loading additional fields (web interface version etc - META)
+		"""!
+		@todo Way of displaying additional fields (aka meta['controller_version'] style)
+		"""
 		table = Texttable(max_width=self._termwidth())
 
 		table.set_deco(0)
