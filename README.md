@@ -1,6 +1,13 @@
 Copyright 2015 University of Edinburgh.
 Author: Lewis Eason <me@lewiseason.co.uk>
 
+# Roadmap
+
+* [ ] Complete work on `meters` command
+* [ ] Write useful man pages
+* [ ] Analyse concurrency/performance
+* [ ] Packaging? Not hard to bundle in an RPM package, symlink groff files and create `/etc/read_device`
+
 ## Installation
 
 *This needs a proper write-up, but to get started:*
