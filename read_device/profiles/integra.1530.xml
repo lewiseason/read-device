@@ -1,3 +1,7 @@
+<!--
+	Copyright 2015 University of Edinburgh
+	Licensed under GPLv3 - see README.md for information
+-->
 <Mutator profile="tcp.modbus">
 	<Field manufacturer="Crompton Instruments" />
 	<Field type="Electricity Meter" />

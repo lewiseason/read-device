@@ -1,3 +1,6 @@
+# Copyright 2015 University of Edinburgh
+# Licensed under GPLv3 - see README.md for information
+
 import sys
 import click
 
@@ -19,6 +22,9 @@ formatters = Config.formatters()
 def main(ctx, **kwargs):
 	"""
 	Query the state of various types of hardware.
+
+	read-device Copyright 2015 University of Edinburgh
+	See <https://github.com/lewiseason/read-device> for information
 	"""
 
 	# If the quiet flag is passed, don't report exceptions.

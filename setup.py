@@ -1,10 +1,13 @@
+# Copyright 2015 University of Edinburgh
+# Licensed under GPLv3 - see README.md for information
+
 from setuptools import setup, find_packages
 
 setup(
     name='read-device',
     version='3.1.8',
     description='Collect metrics from real-world devices',
-    url='https://github.com/lewiseason/read-device'
+    url='https://github.com/lewiseason/read-device',
     classifiers=[
       'Development Status :: 3 - Alpha',
       'Environment :: Console',

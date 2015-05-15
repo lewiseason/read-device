@@ -1,3 +1,6 @@
+# Copyright 2015 University of Edinburgh
+# Licensed under GPLv3 - see README.md for information
+
 import click
 
 from ..config import MetersConfig as Config
@@ -14,6 +17,12 @@ pass_config = click.make_pass_decorator(Config)
 @click.option('-d', '--database', 'dbname', default=None, type=click.Path(exists=True, dir_okay=False, writable=True), help="Path to alternate database file")
 @click.pass_context
 def main(ctx, **kwargs):
+	"""
+	Store and query meter values
+
+	read-device Copyright 2015 University of Edinburgh
+	See <https://github.com/lewiseason/read-device> for information
+	"""
 
 	set_exception_handler(quiet=kwargs.get('quiet'))
 

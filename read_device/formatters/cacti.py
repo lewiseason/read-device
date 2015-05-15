@@ -1,3 +1,6 @@
+# Copyright 2015 University of Edinburgh
+# Licensed under GPLv3 - see README.md for information
+
 """
 Formatter for Cacti data input method.
 http://docs.cacti.net/manual:087:3a_advanced_topics.1_data_input_methods

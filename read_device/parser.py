@@ -1,3 +1,6 @@
+# Copyright 2015 University of Edinburgh
+# Licensed under GPLv3 - see README.md for information
+
 import ast
 import operator
 
