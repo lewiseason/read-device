@@ -1,6 +1,32 @@
+Copyright 2015 University of Edinburgh.
 Author: Lewis Eason <me@lewiseason.co.uk>
 
-# The Small Print
+## Installation
+
+*This needs a proper write-up, but to get started:*
+
+### CentOS 6 / Python 2.6
+
+```shell
+[leason@vortis read_device]$ yum install libxml2-python libxslt-python libxslt-devel
+[leason@vortis read_device]$ pip install read-device pymodbus
+[leason@vortis read_device]$ mkdir -p /etc/read_device/{profiles,formatters}
+[leason@vortis read_device]$ cat > /etc/read_device/site.xml <<-CONFIG
+<?xml version="1.0" encoding="UTF-8"?>
+<Site>
+</Site>
+CONFIG
+```
+
+## Building
+
+To build your very own source package (and upload it to a package index), simply:
+
+```shell
+[leason@vortis read_device]$ python setup.py sdist register upload
+```
+
+## The Small Print
 
 Copyright 2015 University of Edinburgh.
 
@@ -26,20 +52,3 @@ Each file within this program containing the following message:
 is part of the read-device project.
 
 A copy of the GNU General Public License can be found in COPYING
-
-# Installation
-
-*This needs a proper write-up, but to get started:*
-
-## CentOS 6 / Python 2.6
-
-```shell
-yum install libxml2-python libxslt-python libxslt-devel
-pip install read-device pymodbus
-mkdir -p /etc/read_device/{profiles,formatters}
-cat > /etc/read_device/site.xml <<-CONFIG
-<?xml version="1.0" encoding="UTF-8"?>
-<Site>
-</Site>
-CONFIG
-```
