@@ -30,6 +30,17 @@ class FormatterFactory:
 			join='%s.py' % formatter_name)
 
 class DeviceFactory(object):
+	"""!
+	Responsible for discovering all devices defined in the configuration,
+	creating an instance of the profile and applying any mutators.
+
+	config.Config uses this to build up a list of known devices for
+	filtering and querying. This is notionally better than parsing the XML
+	for a given device on the fly, because this way it's possibly to filter
+	on a facet from the mutator, at the expense of slightly reduced performance.
+
+	This class can also be used to create an object on the fly.
+	"""
 
 	def __init__(self, config):
 		self.config = config
@@ -55,10 +66,22 @@ class DeviceFactory(object):
 			yield device
 
 	def from_arguments(self, profile, arguments):
+		"""!
+		Create a device on-the-fly if we have a profile and enough arguments
+		to create it; each profile is responsible for verifying this.
+
+		@returns A subclass of resources.BaseProfile
+		"""
 		if profile:
 			return profile(arguments)
 
 	def build_path(self, node, path=[]):
+		"""!
+		Given an etree.Element node, traverse up its tree recursively to
+		determine its ancestors.
+
+		@returns List<etree.Element>
+		"""
 		path = path + [node]
 		if node.getparent() is not None:
 			node = node.getparent()

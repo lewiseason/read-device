@@ -11,6 +11,10 @@ except ImportError:
 	import Queue as queue # Python 2
 
 def Worker(q, blocking=False):
+	"""!
+	A worker for concurrency.WorkQueue. Will continue to accept jobs from the
+	work queue until none are left. If non-blocking, the worker will then exit
+	"""
 	while True:
 		item = None
 
