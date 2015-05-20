@@ -4,17 +4,16 @@
 import sys
 
 class DefinedError(RuntimeError):
-	pass
+    pass
 
 class PermanentFailure(DefinedError):
-	pass
+    pass
 
 class ConfigurationError(DefinedError):
-	pass
+    pass
 
 class DataError(DefinedError):
-	pass
+    pass
 
 class ResponseError(DefinedError):
-	pass
-
+    pass

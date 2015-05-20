@@ -17,17 +17,17 @@ pass_config = click.make_pass_decorator(Config)
 @click.option('-d', '--database', 'dbname', default=None, type=click.Path(exists=True, dir_okay=False, writable=True), help="Path to alternate database file")
 @click.pass_context
 def main(ctx, **kwargs):
-	"""
-	Store and query meter values
+    """
+    Store and query meter values
 
-	read-device Copyright 2015 University of Edinburgh
-	See <https://github.com/lewiseason/read-device> for information
-	"""
+    read-device Copyright 2015 University of Edinburgh
+    See <https://github.com/lewiseason/read-device> for information
+    """
 
-	set_exception_handler(quiet=kwargs.get('quiet'))
+    set_exception_handler(quiet=kwargs.get('quiet'))
 
-	config  = Config(kwargs)
-	ctx.obj = config
+    config  = Config(kwargs)
+    ctx.obj = config
 
 @main.command()
 @click.option('-f', '--file', type=click.File('rb'), default='-')
@@ -35,22 +35,22 @@ def main(ctx, **kwargs):
 @pass_config
 def store(config, file, id):
 
-	config.load_data(file)
-	db = config.db
+    config.load_data(file)
+    db = config.db
 
-	# TODO: This definitely doesn't belong in read_device.commands
-	for data in config.data:
-		meter, created = db.Meter.get_or_create(
-			name=data['name'],
-			location=db.Location(data['path']),
-		)
+    # TODO: This definitely doesn't belong in read_device.commands
+    for data in config.data:
+        meter, created = db.Meter.get_or_create(
+                name=data['name'],
+                location=db.Location(data['path']),
+        )
 
-		try:
-			value = data['properties'][id]['value']
-			db.Reading.create(meter=meter, value=value, property=id)
-		except peewee.IntegrityError:
-			# Value was probably null
-			pass
-		except KeyError:
-			# Meter didn't return the property we were looking for
-			pass
+        try:
+            value = data['properties'][id]['value']
+            db.Reading.create(meter=meter, value=value, property=id)
+        except peewee.IntegrityError:
+            # Value was probably null
+            pass
+        except KeyError:
+            # Meter didn't return the property we were looking for
+            pass
