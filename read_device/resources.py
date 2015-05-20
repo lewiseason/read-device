@@ -13,10 +13,12 @@ class BaseProfile(object):
 
     Provides:
             * enforcement of required_arguments if specified on the subclass
-            * lightweight work-queue concurrency methods #queue
+            * lightweight work-queue concurrency methods: #queue and #execute
     """
 
     configured  = False
+
+    ## List of properties. May be populated during configuration or on-the-fly
     properties  = []
 
     profile_name = None
@@ -39,12 +41,28 @@ class BaseProfile(object):
         pass
 
     def enumerate(self):
+        """!
+        Subclasses should override this method to gather information from the device.
+        Use of #queue and #execute is encouraged.
+
+        If properties are discovered on the fly instead of being configured in advance,
+        they should be appended to #properties instead of being returned. In both cases
+        set the value of the property using `property.value = ...`
+        """
         pass
 
     def queue(self, target, args=(), name=None):
+        """!
+        @param[in] target function or method to run
+        @param[in] args tuple of arguments to pass to the target
+        @param[in] name optional name for the job
+        """
         self._queue.append(target, args)
 
     def execute(self):
+        """!
+        Bar
+        """
         self._queue.execute()
 
     def to_property(self, data):
@@ -80,6 +98,12 @@ class Property(object):
         return None
 
     def populate(self, value):
+        """!
+        Store the value in the property.
+
+        @deprecated Use the setter instead: `property.value = ...`
+        @param[in] value The raw value of the property
+        """
         self.value = value
 
     @property
