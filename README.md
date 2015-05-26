@@ -129,7 +129,8 @@ and how they interact. Here are some of them*
 * [ ] Write useful man pages?
 * [ ] Analyse concurrency/performance
 * [ ] Packaging? Not hard to bundle in an RPM package, symlink groff files and create `/etc/read_device`
-* [ ] Improved exceptions. Use standard ones more, and write sensible messages
+* [x] Improved exceptions. Use standard ones more, and write sensible messages
+* [ ] Since removing DefinedError, we need a debug option to allow full stack traces to be shown (aka, don't mess with `sys.excepthook`). Optionally, we could detect where the exception was raised, and if it's not ours, fall through to default excepthook always?
 
 ## Building
 

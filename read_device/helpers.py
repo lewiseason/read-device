@@ -2,12 +2,11 @@
 # Licensed under GPLv3 - see README.md for information
 
 import os
+import sys
 import glob
 import itertools
 
 import click
-
-from .errors import *
 
 def locate_file(what, locations, quiet=False):
     """
@@ -24,7 +23,7 @@ def locate_file(what, locations, quiet=False):
     if quiet:
         return None
 
-    raise ConfigurationError("The %s file could not be found in any of these locations: %s" % (what, ', '.join(locations)))
+    raise IOError('The %s file could not be found in any of these locations: %s' % (what, ', '.join(locations)))
 
 def locate_in_dir(what, locations, join=None, concat=None):
     locations = map(os.path.expanduser, locations)
@@ -68,11 +67,7 @@ def path_to_profile_name(path):
     return name
 
 def handle_exception_normally(exctype, value, traceback):
-    if issubclass(exctype, DefinedError):
-        click.echo("%s: %s" % (exctype.__name__, value), err=True)
-    else:
-        # If the exception isn't one of ours, handle it in the default way
-        sys.__excepthook__(exctype, value, traceback)
+    click.echo("%s: %s" % (exctype.__name__, value), err=True)
 
 def handle_exception_quietly(exctype, value, traceback):
     # Obviously, if the exception occurs in a thread (which is quite likely)

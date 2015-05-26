@@ -5,7 +5,6 @@ import imp
 from lxml import etree
 
 from . import helpers
-from .errors import *
 
 class FormatterFactory:
 
@@ -16,14 +15,14 @@ class FormatterFactory:
         path = self.locate_formatter(name)
 
         if path is None:
-            raise Exception("TODO: Could not find formatter %s" % name)
+            raise IOError('Could not find formatter %s.' % name)
 
         try:
             formatter = imp.load_source('read_device.formatter', path).formatter
             return formatter
 
         except AttributeError:
-            raise Exception("TODO: Could not load formatter (ensure the file contains the 'formatter' variable)")
+            raise RuntimeError('Could not load formatter from "%s". Ensure the "formatter" variable is exported.' % path)
 
     def locate_formatter(self, formatter_name):
         return helpers.locate_in_dir('formatter', self.config.formatter_paths,
@@ -123,7 +122,7 @@ class ProfileFactory(object):
             try:
                 profile = imp.load_source('read_device.profile', profile_path).profile
             except AttributeError:
-                raise ConfigurationError("Couldn't load profile from %s. Is the profile variable defined?" % profile_path)
+                raise RuntimeError('Could not load profile from "%s". Ensure the "profile" variable is exported.' % profile_path)
         else:
             # Try to load the given mutator and attach it to the profile
             profile, mutator = self._from_mutator(name)
@@ -134,7 +133,7 @@ class ProfileFactory(object):
             profile.profile_name = name
             return profile
         except AttributeError:
-            raise ConfigurationError('No profile was matched - does it exist?')
+            raise RuntimeError('No profile name was resolved. Ensure the profile specifies one.')
 
     def _from_node(self, node):
         name = node.get('profile')

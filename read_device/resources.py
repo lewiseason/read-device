@@ -75,7 +75,7 @@ class BaseProfile(object):
 
     def _enforce_required_arguments(self):
         if self.required_arguments and not self.required_arguments.issubset(set(self.args)):
-            raise Exception("TODO: The provided data is insufficient to match a single device with no ambiguity on the %s profile." % self.__class__.__name__)
+            raise ValueError('Tried to instantiate %s with insufficient/ambiguous arguments.' % self.__class__.__name__)
 
 class Property(object):
     """!
