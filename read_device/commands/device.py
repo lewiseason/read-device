@@ -23,8 +23,8 @@ def main(ctx, **kwargs):
     """
     Query the state of various types of hardware.
 
-    read-device Copyright 2015 University of Edinburgh
-    See <https://github.com/lewiseason/read-device> for information
+    read-device Copyright 2015 University of Edinburgh.
+    See <https://github.com/lewiseason/read-device> for information.
     """
 
     # If the quiet flag is passed, don't report exceptions.
@@ -81,11 +81,7 @@ def profiles(config):
 @main.command()
 @pass_config
 def list(config, **kwargs):
-    """!
-    List all known devices
-
-    @todo More arguments for filtering (including location, perhaps)
-"""
+    """ List all known devices """
 
     devices = config.devices.all()
 

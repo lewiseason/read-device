@@ -38,7 +38,6 @@ def store(config, file, id):
     config.load_data(file)
     db = config.db
 
-    # TODO: This definitely doesn't belong in read_device.commands
     for data in config.data:
         meter, created = db.Meter.get_or_create(
                 name=data['name'],
