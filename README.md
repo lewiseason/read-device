@@ -113,12 +113,20 @@ CONFIG
 *There are a number of concepts used throughout this documentation and the code to describe various parts of the system
 and how they interact. Here are some of them*
 
+**Device**
+
+**Mutator**
+
+**Profile**
+
+
 # Additional Information
 
 ## Roadmap
 
+* [ ] Add definitions to glossary
 * [ ] Complete work on `meters` command
-* [ ] Write useful man pages
+* [ ] Write useful man pages?
 * [ ] Analyse concurrency/performance
 * [ ] Packaging? Not hard to bundle in an RPM package, symlink groff files and create `/etc/read_device`
 * [ ] Improved exceptions. Use standard ones more, and write sensible messages
