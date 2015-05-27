@@ -1,5 +1,7 @@
 # Usage
 
+## `device` command
+
 * Read the state of a device defined in [config](#Configuration):
 
   `device enumerate -n '$DEVICE_NAME'`
@@ -29,6 +31,14 @@
 * Store the current energy value of all defined electricity meters (*this may take some time*):
 
   `device -y -f json enumerate -t 'Electricity Meter' | meters store`
+
+## `meters` command
+
+
+
+# Architecture
+
+*See `doc/architecture.md`*
 
 # Configuration
 
