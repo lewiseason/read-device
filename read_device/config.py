@@ -37,12 +37,12 @@ class Config(object):
     _formatter = None
 
     def __init__(self, kwargs):
-        config_file = helpers.locate_file('configuration', self.config_paths)
+        self.config_file = helpers.locate_file('configuration', self.config_paths)
 
         self.load_interactive(kwargs)
         self.load_factories()
         self.load_profiles()
-        self.load_config(config_file)
+        self.load_config(self.config_file)
         self.load_devices()
         self.devices = DeviceFinder(self)
 
@@ -135,5 +135,7 @@ class MetersConfig(Config):
     def dbpath(self):
         if self.dbname is not None:
             return self.dbname
-
-        return 'a.db'
+        else:
+            # Default location is in the same directory as config.xml
+            # This may be in /etc, so permissions need to be correct...
+            return path.join(path.dirname(self.config_file), 'meters.db')
