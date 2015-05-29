@@ -3,8 +3,10 @@
 
 from os import path
 from lxml import etree
+import json
 
 from . import helpers
+from . import database
 from .decorators import cached
 from .finder import DeviceFinder
 from .factories import ProfileFactory, DeviceFactory, FormatterFactory
@@ -117,10 +119,6 @@ class Config(object):
 
 class DeviceConfig(Config):
     pass
-
-import json
-
-from . import database
 
 class MetersConfig(Config):
 
