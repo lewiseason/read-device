@@ -3,6 +3,7 @@
 
 import pymodbus.client.sync
 import pymodbus.exceptions
+import pymodbus.constants
 
 from .resources import BaseProfile
 from .decorators import *
@@ -17,6 +18,11 @@ class TCPModbus(BaseProfile):
     version = 2
 
     def configure(self):
+        """!
+        @todo Make Timeout configurable or use the default
+        """
+        pymodbus.constants.Defaults().Timeout = 5
+
         self.slave  = int(self.slave)
         self.client = pymodbus.client.sync.ModbusTcpClient(self.address)
 

@@ -79,7 +79,7 @@ class attempts(object):
 
                 # Otherwise We've failed less than max_attempts times
                 # Wait and try again
-                time.sleep(self.delay)
+                time.sleep(self.delay * step)
 
 class cached(object):
     """

@@ -3,6 +3,8 @@
 
 import sys
 import click
+from random import shuffle
+
 
 from ..config import DeviceConfig as Config
 from ..concurrency import WorkQueue
@@ -52,7 +54,9 @@ def enumerate(ctx, config, **kwargs):
     """ Query all properties of a given device """
 
     devices = config.devices.find_or_create(kwargs)
-    queue   = WorkQueue(concurrency=12)
+    ##
+    # @todo Make concurrency configurable
+    queue = WorkQueue(concurrency=5)
 
     if not devices and not config.quiet:
         click.echo('No devices were matched')
@@ -62,6 +66,12 @@ def enumerate(ctx, config, **kwargs):
         message = "Parameters specified match %i devices. Are you sure?" % len(devices)
         if not config.assumeyes:
             click.confirm(message, default=False, abort=True)
+
+    ##
+    # Devices tend to be listed sequentially in config. Shuffle them in an
+    # attempt to distribute the load across potential controllers.
+    # @todo Perhaps this should be configurable?
+    shuffle(devices)
 
     [ queue.append(device.enumerate) for device in devices]
 
