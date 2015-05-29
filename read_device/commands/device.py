@@ -32,7 +32,7 @@ def main(ctx, **kwargs):
     """
 
     # If the quiet flag is passed, don't report exceptions.
-    set_exception_handler(quiet=kwargs['quiet'])
+    set_exception_handler(quiet=kwargs.get('quiet'), debug=kwargs.get('debug'))
 
     config  = Config(kwargs)
     ctx.obj = config

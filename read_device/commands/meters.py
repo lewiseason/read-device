@@ -29,7 +29,7 @@ def main(ctx, **kwargs):
     See <https://github.com/lewiseason/read-device> for information
     """
 
-    set_exception_handler(quiet=kwargs.get('quiet'))
+    set_exception_handler(quiet=kwargs.get('quiet'), debug=kwargs.get('debug'))
 
     config  = Config(kwargs)
     ctx.obj = config

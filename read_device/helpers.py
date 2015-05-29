@@ -74,8 +74,9 @@ def handle_exception_quietly(exctype, value, traceback):
     # this exit code will never go anywhere.
     sys.exit(255)
 
-def set_exception_handler(quiet):
-    if quiet:
-        sys.excepthook = handle_exception_quietly
-    else:
-        sys.excepthook = handle_exception_normally
+def set_exception_handler(quiet, debug):
+    if not debug:
+        if quiet:
+            sys.excepthook = handle_exception_quietly
+        else:
+            sys.excepthook = handle_exception_normally
