@@ -13,11 +13,13 @@ formatters = Config.formatters()
 
 @click.group()
 @click.option('-q', '--quiet', is_flag=True,
-        default=False, help="Don't prompt or display errors")
+    default=False, help="Don't prompt or display errors")
+@click.option('-d', '--debug', is_flag=True,
+    default=False, help="Display full debugging information and stack traces")
 @click.option('-f', '--format', type=click.Choice(formatters),
-        default='pretty', help='Specify an output format. Default: pretty')
+    default='pretty', help='Specify an output format. Default: pretty')
 @click.option('-y', '--assumeyes', is_flag=True,
-        default=False, help='Assume yes to any prompts')
+    default=False, help='Assume yes to any prompts')
 @click.pass_context
 def main(ctx, **kwargs):
     """
@@ -35,15 +37,15 @@ def main(ctx, **kwargs):
 
 @main.command()
 @click.option('-n', '--name',
-        default=None, help='Preconfigured device name')
+    default=None, help='Preconfigured device name')
 @click.option('-a', '--address',
-        default=None, help='Address/hostname of the device')
+    default=None, help='Address/hostname of the device')
 @click.option('-s', '--sub-id', '--slave',
-        default=None, help='Device-specific sub/slave id')
+    default=None, help='Device-specific sub/slave id')
 @click.option('-p', '--profile',
-        default=None, help='Device profile')
+    default=None, help='Device profile')
 @click.option('-t', '--type',
-        default=None, help='Device type')
+    default=None, help='Device type')
 @pass_config
 @click.pass_context
 def enumerate(ctx, config, **kwargs):

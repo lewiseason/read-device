@@ -13,14 +13,19 @@ from .. import database
 pass_config = click.make_pass_decorator(Config)
 
 @click.group()
-@click.option('-q', '--quiet', is_flag=True, default=False, help="Don't prompt or display errors")
-@click.option('-d', '--database', 'dbname', default=None, type=click.Path(exists=True, dir_okay=False, writable=True), help="Path to alternate database file")
+@click.option('-q', '--quiet', is_flag=True,
+    default=False, help="Don't prompt or display errors")
+@click.option('-d', '--debug', is_flag=True,
+    default=False, help="Display full debugging information and stack traces")
+@click.option('-d', '--database', 'dbname',
+    default=None, type=click.Path(exists=True, dir_okay=False, writable=True),
+    help="Path to alternate database file")
 @click.pass_context
 def main(ctx, **kwargs):
     """
     Store and query meter values
 
-    read-device Copyright 2015 University of Edinburgh
+    read-device Copyright 2015 University of Edinburgh.
     See <https://github.com/lewiseason/read-device> for information
     """
 
