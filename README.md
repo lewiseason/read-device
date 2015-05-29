@@ -34,7 +34,8 @@
 
 ## `meters` command
 
-
+**Note:** This command creates a database in the same directory as config.xml. If this is in `/etc` and you want to use
+the command as non-root you'll need to set permissions correctly (either on the directory or the file itself - `meters.db`).
 
 # Architecture
 
@@ -134,13 +135,17 @@ and how they interact. Here are some of them*
 
 ## Roadmap
 
+* [ ] Since removing DefinedError, we need a debug option to allow full stack traces to be shown (aka, don't mess with `sys.excepthook`). Optionally, we could detect where the exception was raised, and if it's not ours, fall through to default excepthook always?
+* [ ] Use logger for debugging information
 * [ ] Add definitions to glossary
 * [ ] Complete work on `meters` command
 * [ ] Write useful man pages?
 * [ ] Analyse concurrency/performance
 * [ ] Packaging? Not hard to bundle in an RPM package, symlink groff files and create `/etc/read_device`
 * [x] Improved exceptions. Use standard ones more, and write sensible messages
-* [ ] Since removing DefinedError, we need a debug option to allow full stack traces to be shown (aka, don't mess with `sys.excepthook`). Optionally, we could detect where the exception was raised, and if it's not ours, fall through to default excepthook always?
+* [ ] When in debug, queue stack traces so they don't overlap
+* [ ] Make separation of `Config` and its subclasses clearer. There's some code that needs moved
+* [ ] SQL queries in `command.meters` is bad. Fix This.
 
 ## Building
 
