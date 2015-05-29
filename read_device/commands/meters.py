@@ -58,3 +58,43 @@ def store(config, file, id):
         except KeyError:
             # Meter didn't return the property we were looking for
             pass
+
+@main.command()
+@click.option('-s', '--start', help='Start of time range to summarise.', required=True)
+@click.option('-e', '--end', help='End of time range - default is now.', default=datetime.now())
+@pass_config
+def usage(config, start, end):
+    """ Show usage of all meters over a given date range """
+
+    db = config.db
+
+    results = db.db.execute_sql('''
+        SELECT id, name, (
+            SELECT value
+            FROM (
+              SELECT value, MIN(ABS(strftime('%s', (?)) - strftime('%s', timestamp)))
+              FROM reading
+              WHERE reading.meter_id = meter.id
+              GROUP BY meter_id
+              )
+            ) AS openingValue, (
+            SELECT value
+            FROM (
+              SELECT value, MIN(ABS(strftime('%s', (?)) - strftime('%s', timestamp)))
+              FROM reading
+              WHERE reading.meter_id = meter.id
+              GROUP BY meter_id
+              )
+            ) AS closingValue
+        FROM meter;
+
+    ''', (start, end))
+
+    for row in results:
+        meter_id, name, openingValue, closingValue = row
+        try:
+            delta = closingValue - openingValue
+        except TypeError:
+            delta = '???'
+
+        print ("%35s   %s kWh" % (name, delta))
