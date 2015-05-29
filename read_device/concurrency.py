@@ -18,10 +18,10 @@ def Worker(q, blocking=False):
     while True:
         item = None
 
-        try:
-            item = q.get(blocking)
-        except queue.Empty:
+        if q.empty():
             return
+
+        item = q.get(blocking)
 
         try:
             item()

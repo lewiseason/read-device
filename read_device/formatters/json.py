@@ -14,7 +14,7 @@ class JSONFormatter:
 
         data['path'] = self._path(data.get('path'))
         data['properties'] = map(self._property, data.get('properties'))
-        data['properties'] = { prop.get('id'): prop for prop in data['properties'] }
+        data['properties'] = dict((prop.get('id'), prop) for prop in data['properties'])
 
         return data
 
@@ -46,6 +46,6 @@ class JSONFormatter:
         against the object.
         """
 
-        return { attr: getattr(object, attr) for attr in keys }
+        return dict((attr, getattr(object, attr)) for attr in keys)
 
 formatter = JSONFormatter

@@ -119,6 +119,16 @@ Python 2.6.6
 CONFIG
 ```
 
+On some distributions you'll get the following error when you run any command:
+
+> pkg_resources.DistributionNotFound: requests
+
+In this case, the easiest fix is to install the packages from the distro:
+
+``` shell
+yum install python-requests python-click
+```
+
 # Glossary
 
 *There are a number of concepts used throughout this documentation and the code to describe various parts of the system
